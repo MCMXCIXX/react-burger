@@ -1,0 +1,25 @@
+.app-header {
+
+  &__navigation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  &__menu-tiems-warpper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__logo-wrapper {
+
+  }
+
+  &__logo {
+    position: relative;
+    left: 25%;
+    transform: translateX(-50%);
+  }
+}
