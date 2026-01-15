@@ -1,0 +1,23 @@
+.burger-constructor {
+  &__list {
+    margin-top: 135px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 800px;
+    overflow: auto;
+  }
+  &__total {
+    display: flex;
+    justify-content: end;
+    gap: 40px;
+    margin-top: 40px;
+    align-items: center;
+  }
+  &__item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+  }
+}
