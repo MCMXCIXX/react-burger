@@ -1,32 +1,69 @@
 import './BurgerIngredients.scss';
 import {Counter, CurrencyIcon, Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import IngredientsList from "../IngredientsList/IngredientsList";
+import Data from "../../data";
 
 const BurgerIngredients = (props) => {
     const {className, ingredientsData} = props
-    const [current, setCurrent] = React.useState('one')
+    const [current, setCurrent] = React.useState('bun');
+
+    const ingredientsListRefs = useRef([]);
+
+    const ingredientsListDataRender = [
+        {title: "Булки", type: "bun"}, {title: "Начинка", type: "main"}, {title: "Соусы", type: "sauce"},
+    ]
+
+    const setIngredientsListRefs = (index) => (node) => {
+
+        ingredientsListRefs.current[index] = node;
+    };
+
+    useEffect(() => {
+
+            console.log(ingredientsListRefs.current.findIndex(item => item.type === current));
+
+            ingredientsListRefs.current.filter((ingredient, index) => {
+                return ingredient.id === current
+            })[0]?.scrollIntoView({behavior: "smooth"});
+    }, [current]);
+
+
     return (
         <div className="burger-ingredients pt-5">
             <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
+
             <div style={{display: 'flex'}}>
-                <Tab value="one" active={current === 'one'} onClick={setCurrent}>
-                    One
-                </Tab>
-                <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-                    Two
-                </Tab>
-                <Tab value="three" active={current === 'three'} onClick={setCurrent}>
-                    Three
-                </Tab>
+                {ingredientsListDataRender.map(({type, title}) => {
+                    return (
+                        <Tab
+                            value={type}
+                            active={current === type}
+                            key={type}
+                            onClick={setCurrent}>
+                            {title}
+                        </Tab>
+                    )
+
+                })}
+
             </div>
 
             <div className="burger-ingredients__list-warpper">
-                <IngredientsList ingredientsData={ingredientsData} title="Булки" type="bun"/>
 
-                <IngredientsList ingredientsData={ingredientsData} title="Начинка" type="main"/>
+                {ingredientsListDataRender.map(({type, title}, index) => {
+                    return (
+                        <IngredientsList
+                            ref={setIngredientsListRefs(index)}
+                            ingredientsData={ingredientsData}
+                            key={type}
+                            title={title}
+                            type={type}
+                            id={type}
+                        />
+                    )
+                })}
 
-                <IngredientsList ingredientsData={ingredientsData} title="Соусы" type="sauce"/>
             </div>
 
 

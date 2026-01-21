@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import './styles/main.scss'
 import AppHeader from "./components/AppHeader/AppHeader";
@@ -8,6 +8,10 @@ import MainColonums from "./components/MainColonums/MainColonums";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 
 function App() {
+
+
+    const [constructorData, setConstructorData] = useState([]);
+
     return <>
         <AppHeader/>
 
