@@ -5,7 +5,7 @@ import IngredientsList from "../IngredientsList/IngredientsList";
 import Data from "../../data";
 
 const BurgerIngredients = (props) => {
-    const {className, ingredientsData} = props
+    const {className,onIngredientsClick, ingredientsData, ingredintsCount} = props
     const [current, setCurrent] = React.useState('bun');
 
     const ingredientsListRefs = useRef([]);
@@ -54,12 +54,14 @@ const BurgerIngredients = (props) => {
                 {ingredientsListDataRender.map(({type, title}, index) => {
                     return (
                         <IngredientsList
+                            ingredintsCount={ingredintsCount}
                             ref={setIngredientsListRefs(index)}
                             ingredientsData={ingredientsData}
                             key={type}
                             title={title}
                             type={type}
                             id={type}
+                            onIngredientsClick={onIngredientsClick}
                         />
                     )
                 })}
