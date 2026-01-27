@@ -4,7 +4,7 @@ import './styles/main.scss'
 import AppHeader from "./components/AppHeader/AppHeader";
 import BurgerIngredients from "./components/BurgerIngredients/BurgerIngredients";
 import ingredientsData from "./data";
-import MainСolumns from "./components/MainСolumns/MainСolumns";
+import MainColumns from "./components/MainColumns/MainColumns";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 
 function App() {
@@ -102,20 +102,14 @@ function App() {
         setTotalPrice(constructorData.reduce((acc, ingredient) => acc + ingredient.price, 0));
 
     }
-
-    useEffect(() => {
-        // Суммируем ВСЕ значения в объекте ingredientCounts
-        const totalCount = Object.values(ingredientsCount).reduce((sum, count) => sum + count, 0);
-
-    }, [ingredientsCount]);
-
+    
     useEffect(() => {
         updateTotalPrice();
     }, [constructorData])
     return <>
         <AppHeader/>
 
-        <MainСolumns>
+        <MainColumns>
             <BurgerIngredients
                 ingredientsCount={ingredientsCount}
                 onIngredientsClick={addIngredients}
@@ -125,7 +119,7 @@ function App() {
                 deleteIngredient={deleteIngredient}
                 maxRequiredIngredients={maxRequiredIngredients}
                 constructorData={constructorData}/>
-        </MainСolumns>
+        </MainColumns>
 
     </>
 }

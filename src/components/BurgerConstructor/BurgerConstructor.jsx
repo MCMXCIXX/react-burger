@@ -13,7 +13,7 @@ const BurgerConstructor = (props) => {
             <ul className="burger-constructor__list">
                 {
                     constructorDataFiltered.map((ingredient, index) => (
-                        <li className="burger-constructor__item burger-constructor__item--require" key={crypto.randomUUID()}>
+                        <li className="burger-constructor__item burger-constructor__item--require" key={ingredient.id + index}>
                             <ConstructorElement
                                 isLocked={constructorData.length > maxRequiredIngredients}
                                 type={index === 0 ? "top" : "bottom"}
@@ -26,9 +26,9 @@ const BurgerConstructor = (props) => {
                     ))
                 }
 
-                {constructorData.map((ingredient) =>
+                {constructorData.map((ingredient, index) => () =>
                     ingredient.type !== "bun" && (
-                            <li className="burger-constructor__item" key={crypto.randomUUID()}>
+                            <li className="burger-constructor__item" key={ingredient.id + index}>
                                 <div className="burger-constructor__item-icon">
                                     <DragIcon type="primary"/>
                                 </div>
