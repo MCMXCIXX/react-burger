@@ -39,7 +39,6 @@ function App() {
         const newIngredient = findIngredient(id);
 
 
-
         if (!newIngredient) {
             console.error(`Ингредиент с ID ${id} не найден.`);
             return
@@ -81,7 +80,7 @@ function App() {
         setConstructorData((prevState) => prevState.filter((item) => item.id !== id))
 
         setIngredientsCount(prevCounts => {
-            const newCounts = { ...prevCounts };
+            const newCounts = {...prevCounts};
 
             if (newCounts[ingredientTypeId] > 0) {
                 newCounts[ingredientTypeId] -= 1;
@@ -117,8 +116,15 @@ function App() {
         <AppHeader/>
 
         <MainColonums>
-            <BurgerIngredients ingredintsCount={ingredintsCount} onIngredientsClick={addIngredients} ingredientsData={ingredientsData}/>
-            <BurgerConstructor totalPrice={totalPrice} deleteIngredient={deleteIngredient} maxRequiredIngredients={maxRequiredIngredients} constructorData={constructorData}/>
+            <BurgerIngredients
+                ingredintsCount={ingredintsCount}
+                onIngredientsClick={addIngredients}
+                ingredientsData={ingredientsData}/>
+            <BurgerConstructor
+                totalPrice={totalPrice}
+                deleteIngredient={deleteIngredient}
+                maxRequiredIngredients={maxRequiredIngredients}
+                constructorData={constructorData}/>
         </MainColonums>
 
     </>

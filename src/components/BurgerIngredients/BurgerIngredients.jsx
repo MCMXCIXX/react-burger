@@ -5,7 +5,7 @@ import IngredientsList from "../IngredientsList/IngredientsList";
 import Data from "../../data";
 
 const BurgerIngredients = (props) => {
-    const {className,onIngredientsClick, ingredientsData, ingredintsCount} = props
+    const {className, onIngredientsClick, ingredientsData, ingredintsCount} = props
     const [current, setCurrent] = React.useState('bun');
 
     const ingredientsListRefs = useRef([]);
@@ -21,11 +21,11 @@ const BurgerIngredients = (props) => {
 
     useEffect(() => {
 
-            console.log(ingredientsListRefs.current.findIndex(item => item.type === current));
+        console.log(ingredientsListRefs.current.findIndex(item => item.type === current));
 
-            ingredientsListRefs.current.filter((ingredient, index) => {
-                return ingredient.id === current
-            })[0]?.scrollIntoView({behavior: "smooth"});
+        ingredientsListRefs.current.filter((ingredient, index) => {
+            return ingredient.id === current
+        })[0]?.scrollIntoView({behavior: "smooth"});
     }, [current]);
 
 
