@@ -5,7 +5,7 @@ import IngredientsList from "../IngredientsList/IngredientsList";
 import Data from "../../data";
 
 const BurgerIngredients = (props) => {
-    const {className, onIngredientsClick, ingredientsData, ingredintsCount} = props
+    const {className, onIngredientsClick, ingredientsData, ingredientsCount} = props
     const [current, setCurrent] = React.useState('bun');
 
     const ingredientsListRefs = useRef([]);
@@ -20,8 +20,6 @@ const BurgerIngredients = (props) => {
     };
 
     useEffect(() => {
-
-        console.log(ingredientsListRefs.current.findIndex(item => item.type === current));
 
         ingredientsListRefs.current.filter((ingredient, index) => {
             return ingredient.id === current
@@ -54,7 +52,7 @@ const BurgerIngredients = (props) => {
                 {ingredientsListDataRender.map(({type, title}, index) => {
                     return (
                         <IngredientsList
-                            ingredintsCount={ingredintsCount}
+                            ingredientsCount={ingredientsCount}
                             ref={setIngredientsListRefs(index)}
                             ingredientsData={ingredientsData}
                             key={type}

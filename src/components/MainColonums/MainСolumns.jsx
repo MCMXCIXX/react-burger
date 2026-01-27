@@ -1,8 +1,8 @@
-import './MainColonums.scss';
+import './MainСolumns.scss';
 
-const MainColonums = (props) => {
+const MainСolumns = (props) => {
     const {className, children} = props
     return <div className="main-colonums container">{children}</div>;
 };
 
-export default MainColonums;
+export default MainСolumns;

@@ -3,7 +3,7 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import React, {forwardRef} from "react";
 
 const IngredientsList = forwardRef(((props, ref) => {
-    const {ingredientsData, type, onIngredientsClick, title,ingredintsCount} = props
+    const {ingredientsData, type, onIngredientsClick, title,ingredientsCount } = props
 
 
     return (
@@ -17,7 +17,7 @@ const IngredientsList = forwardRef(((props, ref) => {
                         }}>
                         <div className="ingredients-list__image-wrapper mb-1 ml-4 mr-4">
                             <img src={ingredient.image} alt={ingredient.name} className="ingredients-list__image "/>
-                            {(ingredintsCount[ingredient._id] && <Counter count={ingredintsCount[ingredient._id]} size="small"/>)}
+                            {(ingredientsCount [ingredient._id] && <Counter count={ingredientsCount [ingredient._id]} size="small"/>)}
 
 
                         </div>

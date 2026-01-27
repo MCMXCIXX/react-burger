@@ -4,7 +4,7 @@ import './styles/main.scss'
 import AppHeader from "./components/AppHeader/AppHeader";
 import BurgerIngredients from "./components/BurgerIngredients/BurgerIngredients";
 import ingredientsData from "./data";
-import MainColonums from "./components/MainColonums/MainColonums";
+import MainСolumns from "./components/MainСolumns/MainСolumns";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 
 function App() {
@@ -14,18 +14,19 @@ function App() {
 
     const [totalPrice, setTotalPrice] = useState(0);
 
-    const [ingredintsCount, setIngredientsCount] = useState({});
+    const [ingredientsCount, setIngredientsCount] = useState({});
 
 
     const findIngredient = (id) => {
         const baseIngredient = ingredientsData.find(ingredient => ingredient._id === id)
+        if (baseIngredient) {
+            const newBaseIngredient = {
+                ...baseIngredient,
+                id: crypto.randomUUID(),
+            }
 
-        const newBaseIngredient = {
-            ...baseIngredient,
-            id: Date.now().toString(),
+            return newBaseIngredient
         }
-
-        return newBaseIngredient
 
     }
 
@@ -104,10 +105,9 @@ function App() {
 
     useEffect(() => {
         // Суммируем ВСЕ значения в объекте ingredientCounts
-        const totalCount = Object.values(ingredintsCount).reduce((sum, count) => sum + count, 0);
-        console.log("Общее количество добавленных ингредиентов:", totalCount);
-        console.log(ingredintsCount);
-    }, [ingredintsCount]);
+        const totalCount = Object.values(ingredientsCount).reduce((sum, count) => sum + count, 0);
+
+    }, [ingredientsCount]);
 
     useEffect(() => {
         updateTotalPrice();
@@ -115,9 +115,9 @@ function App() {
     return <>
         <AppHeader/>
 
-        <MainColonums>
+        <MainСolumns>
             <BurgerIngredients
-                ingredintsCount={ingredintsCount}
+                ingredientsCount={ingredientsCount}
                 onIngredientsClick={addIngredients}
                 ingredientsData={ingredientsData}/>
             <BurgerConstructor
@@ -125,7 +125,7 @@ function App() {
                 deleteIngredient={deleteIngredient}
                 maxRequiredIngredients={maxRequiredIngredients}
                 constructorData={constructorData}/>
-        </MainColonums>
+        </MainСolumns>
 
     </>
 }
