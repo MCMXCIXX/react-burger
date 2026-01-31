@@ -13,7 +13,7 @@ const BurgerConstructor = (props) => {
             <ul className="burger-constructor__list">
                 {
                     constructorDataFiltered.map((ingredient, index) => (
-                        <li className="burger-constructor__item burger-constructor__item--require" key={ingredient.id + index}>
+                        <li className="burger-constructor__item burger-constructor__item--require" key={ingredient.id}>
                             <ConstructorElement
                                 isLocked={constructorData.length > maxRequiredIngredients}
                                 type={index === 0 ? "top" : "bottom"}
@@ -26,21 +26,20 @@ const BurgerConstructor = (props) => {
                     ))
                 }
 
-                {constructorData.map((ingredient, index) => () =>
-                    ingredient.type !== "bun" && (
-                            <li className="burger-constructor__item" key={ingredient.id + index}>
-                                <div className="burger-constructor__item-icon">
-                                    <DragIcon type="primary"/>
-                                </div>
-                                <ConstructorElement
-                                    text={ingredient.name}
-                                    price={ingredient.price}
-                                    thumbnail={ingredient.image}
-                                    handleClose={()=>{deleteIngredient(ingredient.id, ingredient._id)}}
-                                />
-                            </li>
-                        )
-                )}
+
+                {constructorData.filter((ingredient)=>ingredient.type !== "bun").map((ingredient, index) => (
+                    <li className="burger-constructor__item" key={ingredient.id}>
+                        <div className="burger-constructor__item-icon">
+                            <DragIcon type="primary"/>
+                        </div>
+                        <ConstructorElement
+                            text={ingredient.name}
+                            price={ingredient.price}
+                            thumbnail={ingredient.image}
+                            handleClose={()=>{deleteIngredient(ingredient.id, ingredient._id)}}
+                        />
+                    </li>
+                ))}
             </ul>
 
             <div className="burger-constructor__total">

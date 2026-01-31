@@ -6,6 +6,7 @@ import BurgerIngredients from "./components/BurgerIngredients/BurgerIngredients"
 import ingredientsData from "./data";
 import MainColumns from "./components/MainColumns/MainColumns";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
+import { useNotifications} from "./context/NotificationContext";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
 
     const [ingredientsCount, setIngredientsCount] = useState({});
 
+    const { showNotification } = useNotifications();
 
     const findIngredient = (id) => {
         const baseIngredient = ingredientsData.find(ingredient => ingredient._id === id)
@@ -41,7 +43,7 @@ function App() {
 
 
         if (!newIngredient) {
-            console.error(`Ингредиент с ID ${id} не найден.`);
+            showNotification(`Ингредиент с ID ${id} не найден.`)
             return
         }
 
@@ -56,13 +58,15 @@ function App() {
                     [newIngredient._id]: (prevCounts[newIngredient._id] || 0) + 1
                 }));
             } else {
-                console.warn(`Достигнут лимит булок (${maxRequiredIngredients}).`);
+                showNotification(`Достигнут лимит булок (${maxRequiredIngredients}).`, 2500);
+
             }
         }
 
         if (newIngredient.type !== requiredType) {
             if (countRequiredIngredientsInConstructor === 0) {
-                console.warn("Сначала добавьте булку, чтобы начать сборку.");
+                showNotification("Сначала добавьте булку, чтобы начать сборку.", 2500);
+
                 return;
             }
             setConstructorData((prevState) => [...prevState, newIngredient]);
@@ -102,24 +106,28 @@ function App() {
         setTotalPrice(constructorData.reduce((acc, ingredient) => acc + ingredient.price, 0));
 
     }
-    
+
     useEffect(() => {
         updateTotalPrice();
     }, [constructorData])
     return <>
-        <AppHeader/>
 
-        <MainColumns>
-            <BurgerIngredients
-                ingredientsCount={ingredientsCount}
-                onIngredientsClick={addIngredients}
-                ingredientsData={ingredientsData}/>
-            <BurgerConstructor
-                totalPrice={totalPrice}
-                deleteIngredient={deleteIngredient}
-                maxRequiredIngredients={maxRequiredIngredients}
-                constructorData={constructorData}/>
-        </MainColumns>
+
+
+            <AppHeader/>
+
+            <MainColumns>
+                <BurgerIngredients
+                    ingredientsCount={ingredientsCount}
+                    onIngredientsClick={addIngredients}
+                    ingredientsData={ingredientsData}/>
+                <BurgerConstructor
+                    totalPrice={totalPrice}
+                    deleteIngredient={deleteIngredient}
+                    maxRequiredIngredients={maxRequiredIngredients}
+                    constructorData={constructorData}/>
+            </MainColumns>
+
 
     </>
 }

@@ -21,9 +21,9 @@ const BurgerIngredients = (props) => {
 
     useEffect(() => {
 
-        ingredientsListRefs.current.filter((ingredient, index) => {
-            return ingredient.id === current
-        })[0]?.scrollIntoView({behavior: "smooth"});
+        const node = ingredientsListRefs.current.find((n) => n?.dataset?.type === current);
+        node?.scrollIntoView({behavior: "smooth", block: "start"});
+
     }, [current]);
 
 
