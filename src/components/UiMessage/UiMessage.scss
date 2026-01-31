@@ -1,0 +1,25 @@
+.uiMessage {
+  position: fixed;
+  top: -200px;
+  opacity: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--colors-interface-accent);
+  padding: 20px 40px;
+  border-radius: 25px;
+  color: var(--text-primary-color);
+  font-weight: bold;
+  z-index: 100;
+  transition: opacity 0.3s ease, top 0.3s ease;
+}
+
+.uiMessage.visible{
+  top: 30px;
+  opacity: 1;
+}
+
+.uiMessage.hidden{
+  top: -200px;
+  opacity: 0;
+}
+

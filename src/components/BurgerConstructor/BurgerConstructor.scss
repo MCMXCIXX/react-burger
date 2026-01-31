@@ -1,0 +1,30 @@
+.burger-constructor {
+  &__list {
+    margin-top: 135px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 800px;
+    overflow: auto;
+    scrollbar-gutter: stable;
+  }
+  &__total {
+    display: flex;
+    justify-content: end;
+    gap: 40px;
+    margin-top: 40px;
+    align-items: center;
+  }
+  &__item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: end;
+    cursor: pointer;
+    order: 0;
+    margin-right: 10px;
+  }
+  &__item--require:nth-child(2) {
+    order: 100;
+  }
+}
