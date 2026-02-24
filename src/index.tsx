@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {NotificationProvider} from "./context/NotificationContext";
+import {Provider} from "react-redux";
+import {store} from "./services/store/store";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -11,10 +13,13 @@ const root = ReactDOM.createRoot(
 root.render(
     <NotificationProvider>
         <React.StrictMode>
-            <App/>
+            <Provider store={store}>
+                <App/>
+            </Provider>
         </React.StrictMode>
     </NotificationProvider>
-);
+)
+;
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

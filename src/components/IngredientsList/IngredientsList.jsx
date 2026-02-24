@@ -1,9 +1,12 @@
 import './IngredientsList.scss';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import React, {forwardRef} from "react";
+import React, {forwardRef, useRef} from "react";
+import {useSelector} from "react-redux";
 
 const IngredientsList = forwardRef(((props, ref) => {
-    const {ingredientsData, type, onIngredientsClick, title, ingredientsCount} = props
+    const {ingredientsData, type, onIngredientsClick, title} = props
+
+    const ingredientsCount = useSelector(state => state.burgerConstructor.ingredientsCount);
 
 
     return (
@@ -18,8 +21,9 @@ const IngredientsList = forwardRef(((props, ref) => {
                         }}>
                         <div className="ingredients-list__image-wrapper mb-1 ml-4 mr-4">
                             <img src={ingredient.image} alt={ingredient.name} className="ingredients-list__image "/>
-                            {(ingredientsCount [ingredient._id] &&
-                                <Counter count={ingredientsCount [ingredient._id]} size="small"/>)}
+                            {ingredientsCount?.[ingredient?._id ?? ''] && (
+                                <Counter count={ingredientsCount[ingredient._id]} size="small" />
+                            )}
 
 
                         </div>

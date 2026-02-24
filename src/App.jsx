@@ -7,15 +7,18 @@ import ingredientsData from "./data";
 import MainColumns from "./components/MainColumns/MainColumns";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 import { useNotifications} from "./context/NotificationContext";
+import {addConstructorIngredient} from "./services/actions/burgerCosntructorActions";
+import {useDispatch, useSelector} from "react-redux";
 
 function App() {
 
+    const dispatch = useDispatch();
 
-    const [constructorData, setConstructorData] = useState([]);
+    // const [constructorData, setConstructorData] = useState([]);
+    const constructorData = useSelector(state=>state.burgerConstructor.ingredients)
+    // const [totalPrice, setTotalPrice] = useState(0);
 
-    const [totalPrice, setTotalPrice] = useState(0);
-
-    const [ingredientsCount, setIngredientsCount] = useState({});
+    // const [ingredientsCount, setIngredientsCount] = useState({});
 
     const { showNotification } = useNotifications();
 
@@ -41,7 +44,6 @@ function App() {
 
         const newIngredient = findIngredient(id);
 
-
         if (!newIngredient) {
             showNotification(`Ингредиент с ID ${id} не найден.`)
             return
@@ -52,11 +54,12 @@ function App() {
 
         if (newIngredient.type === requiredType) {
             if (countRequiredIngredientsInConstructor < maxRequiredIngredients) {
-                setConstructorData((prevState) => [...prevState, newIngredient]);
-                setIngredientsCount(prevCounts => ({
-                    ...prevCounts,
-                    [newIngredient._id]: (prevCounts[newIngredient._id] || 0) + 1
-                }));
+                dispatch(addConstructorIngredient(newIngredient));
+                // setConstructorData((prevState) => [...prevState, newIngredient]);
+                // setIngredientsCount(prevCounts => ({
+                //     ...prevCounts,
+                //     [newIngredient._id]: (prevCounts[newIngredient._id] || 0) + 1
+                // }));
             } else {
                 showNotification(`Достигнут лимит булок (${maxRequiredIngredients}).`, 2500);
 
@@ -69,47 +72,47 @@ function App() {
 
                 return;
             }
-            setConstructorData((prevState) => [...prevState, newIngredient]);
-
-            setIngredientsCount(prevCounts => ({
-                ...prevCounts,
-                [newIngredient._id]: (prevCounts[newIngredient._id] || 0) + 1
-            }));
+            // setConstructorData((prevState) => [...prevState, newIngredient]);
+            dispatch(addConstructorIngredient(newIngredient));
+            // setIngredientsCount(prevCounts => ({
+            //     ...prevCounts,
+            //     [newIngredient._id]: (prevCounts[newIngredient._id] || 0) + 1
+            // }));
         }
 
 
     };
 
-    const deleteIngredient = (id, ingredientTypeId) => {
+    // const deleteIngredient = (id, ingredientTypeId) => {
 
-        setConstructorData((prevState) => prevState.filter((item) => item.id !== id))
+        // setConstructorData((prevState) => prevState.filter((item) => item.id !== id))
+        // dispatch(deleteConstructorIngredient(id));
+    //     setIngredientsCount(prevCounts => {
+    //         const newCounts = {...prevCounts};
+    //
+    //         if (newCounts[ingredientTypeId] > 0) {
+    //             newCounts[ingredientTypeId] -= 1;
+    //         }
+    //
+    //
+    //         if (newCounts[ingredientTypeId] === 0) {
+    //             delete newCounts[ingredientTypeId];
+    //         }
+    //
+    //         return newCounts;
+    //     });
+    //
+    // }
 
-        setIngredientsCount(prevCounts => {
-            const newCounts = {...prevCounts};
-
-            if (newCounts[ingredientTypeId] > 0) {
-                newCounts[ingredientTypeId] -= 1;
-            }
-
-
-            if (newCounts[ingredientTypeId] === 0) {
-                delete newCounts[ingredientTypeId];
-            }
-
-            return newCounts;
-        });
-
-    }
-
-    const updateTotalPrice = () => {
-
-        setTotalPrice(constructorData.reduce((acc, ingredient) => acc + ingredient.price, 0));
-
-    }
-
-    useEffect(() => {
-        updateTotalPrice();
-    }, [constructorData])
+    // const updateTotalPrice = () => {
+    //
+    //     setTotalPrice(constructorData.reduce((acc, ingredient) => acc + ingredient.price, 0));
+    //
+    // }
+    //
+    // useEffect(() => {
+    //     updateTotalPrice();
+    // }, [constructorData])
     return <>
 
 
@@ -118,14 +121,10 @@ function App() {
 
             <MainColumns>
                 <BurgerIngredients
-                    ingredientsCount={ingredientsCount}
                     onIngredientsClick={addIngredients}
                     ingredientsData={ingredientsData}/>
                 <BurgerConstructor
-                    totalPrice={totalPrice}
-                    deleteIngredient={deleteIngredient}
-                    maxRequiredIngredients={maxRequiredIngredients}
-                    constructorData={constructorData}/>
+                    maxRequiredIngredients={maxRequiredIngredients}/>
             </MainColumns>
 
 

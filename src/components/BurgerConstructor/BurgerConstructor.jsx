@@ -1,9 +1,14 @@
 import './BurgerConstructor.scss';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteConstructorIngredient} from "../../services/actions/burgerCosntructorActions";
 
 const BurgerConstructor = (props) => {
-    const {constructorData, maxRequiredIngredients, deleteIngredient, totalPrice} = props
+    const {maxRequiredIngredients, deleteIngredient} = props
+    const constructorData = useSelector(state=> state.burgerConstructor.ingredients)
+    const totalPrice = useSelector(state=> state.burgerConstructor.totalPrice)
+    const dispatch = useDispatch();
 
     const hasIngredients = constructorData.length > 0;
 
@@ -20,7 +25,7 @@ const BurgerConstructor = (props) => {
                                 text={`${ingredient.name} ${index > 0 ? "(низ)" : "(верх)"}`}
                                 price={ingredient.price}
                                 thumbnail={ingredient.image}
-                                handleClose={()=>{deleteIngredient(ingredient.id, ingredient._id)}}
+                                handleClose={()=>{dispatch(deleteConstructorIngredient(ingredient))}}
                             />
                         </li>
                     ))
@@ -36,7 +41,7 @@ const BurgerConstructor = (props) => {
                             text={ingredient.name}
                             price={ingredient.price}
                             thumbnail={ingredient.image}
-                            handleClose={()=>{deleteIngredient(ingredient.id, ingredient._id)}}
+                            handleClose={()=>{dispatch(deleteConstructorIngredient(ingredient))}}
                         />
                     </li>
                 ))}
