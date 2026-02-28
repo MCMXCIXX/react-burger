@@ -9,14 +9,14 @@ const IngredientsList = forwardRef(((props, ref) => {
 
     const ingredientsCount = useSelector(state => state.burgerConstructor.ingredientsCount);
 
-    const {ingredients, massageError, loading} = useSelector(state => state.burgerConstructor.ingredientData)
+    const {ingredients, messageError, loading} = useSelector(state => state.burgerConstructor.ingredientData)
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (ingredients.length === 0) {
+        if (!loading && ingredients.length === 0) {
             dispatch(fetchIngredientsData());
         }
-    }, [dispatch, ingredients.length]);
+    }, [dispatch,loading, ingredients.length]);
 
     return (
         <>
@@ -30,7 +30,7 @@ const IngredientsList = forwardRef(((props, ref) => {
                         }}>
                         <div className="ingredients-list__image-wrapper mb-1 ml-4 mr-4">
                             <img src={ingredient.image} alt={ingredient.name} className="ingredients-list__image "/>
-                            {ingredientsCount?.[ingredient?._id ?? ''] && (
+                            {ingredientsCount[ingredient?._id] > 0 && (
                                 <Counter count={ingredientsCount[ingredient._id]} size="small" />
                             )}
 

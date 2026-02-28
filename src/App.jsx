@@ -13,13 +13,13 @@ import {hideNotification} from "./services/actions/notificationActions";
 
 function App() {
 
-    const {notificationMassage, isShow} = useSelector(state => state.notification)
+    const {notificationmessage, isShow} = useSelector(state => state.notification)
     const dispatch = useDispatch();
 
 
     return <>
 
-        {(notificationMassage && <UiMessage text={notificationMassage} className={isShow ? 'visible' : 'hidden'} />)}
+        {(notificationmessage && <UiMessage text={notificationmessage} className={isShow ? 'visible' : 'hidden'} />)}
         <AppHeader/>
         <MainColumns>
             <BurgerIngredients/>

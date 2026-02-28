@@ -10,7 +10,7 @@ export const DELETE_BUN_TO_CONSTRUCTOR = 'DELETE_BUN_TO_CONSTRUCTOR';
 const initialState = {
     ingredientData: {
         loading: false,
-        massageError: '',
+        messageError: '',
         ingredients: [],
     },
     ingredients: [],
@@ -34,13 +34,17 @@ export const burgerConstructorReducer = (state = initialState, action) => {
             }
 
         case DELETE_INGREDIENT_TO_CONSTRUCTOR:
+            const newCount = {...state.ingredientsCount};
+            if(newCount[action.payload._id] > 1){
+                newCount[action.payload._id] -= 1;
+            } else {
+               delete newCount[action.payload._id];
+            }
+
             return {
                 ...state,
                 ingredients: state.ingredients.filter(ingredient => ingredient.id !== action.payload.id),
-                ingredientsCount: {
-                    ...state.ingredientsCount,
-                    [action.payload._id]: state.ingredientsCount[action.payload._id] > 1 ? state.ingredientsCount[action.payload._id] - 1 : false,
-                },
+                ingredientsCount: newCount,
                 totalPrice: state.totalPrice - action.payload.price
             }
 
@@ -68,7 +72,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                 ingredientData: {
                     ...state.ingredientData,
                     loading: false,
-                    massageError: action.payload,
+                    messageError: action.payload,
                 }
             }
 

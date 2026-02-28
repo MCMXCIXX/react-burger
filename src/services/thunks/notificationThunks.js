@@ -1,11 +1,11 @@
 import {hideNotification, showNotification} from "../actions/notificationActions";
 
-export const showNotificationThunk = (massage) => {
+export const showNotificationThunk = (message) => {
     return (dispatch, getState) => {
         const state = getState();
-        dispatch(showNotification(massage))
+        dispatch(showNotification(message))
         setTimeout(() => {
-            dispatch(hideNotification(massage))
+            dispatch(hideNotification())
         }, state.notification.showTime)
     }
 }

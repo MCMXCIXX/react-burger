@@ -32,10 +32,10 @@ export const fetchIngredientsSuccess = (ingredientsArray) => {
     }
 }
 
-export const fetchIngredientsFailure = (massage) => {
+export const fetchIngredientsFailure = (message) => {
     return {
         type: FETCH_INGREDIENTS_FAILURE,
-        payload: massage,
+        payload: message,
     }
 }
 

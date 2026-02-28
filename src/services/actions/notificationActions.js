@@ -1,10 +1,10 @@
 
 import {HIDE_NOTIFICATION, SHOW_NOTIFICATION} from "../reducers/notificationReducer";
 
-export const showNotification = (massage) => {
+export const showNotification = (message) => {
     return {
         type: SHOW_NOTIFICATION,
-        payload: massage
+        payload: message
     }
 }
 

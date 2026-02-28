@@ -7,9 +7,8 @@ import {
 } from "../actions/burgerCosntructorActions";
 import {showNotificationThunk} from "./notificationThunks";
 
-const URL = "https:raw.githubusercontent.com/MCMXCIXX/burger-ingredients-db/refs/heads/main/ingredients.json";
+const URL = "https://raw.githubusercontent.com/MCMXCIXX/burger-ingredients-db/refs/heads/main/ingredients.json";
 const requiredType = 'bun'
-
 
 
 export const fetchIngredientsData = () => {
@@ -79,12 +78,9 @@ export const addIngredientsThunk = (id) => {
         }
 
         if (ingredientObject.type !== requiredType) {
-            if (RequiredIngredientsInConstructor?.length > 0) {
-                // showNotification("Сначала добавьте булку, чтобы начать сборку.", 2500);
-                return;
-            }
-
             dispatch(addConstructorIngredient(ingredientObject));
+
+
         }
     }
 
