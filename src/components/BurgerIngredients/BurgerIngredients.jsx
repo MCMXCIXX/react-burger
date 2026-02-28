@@ -3,10 +3,14 @@ import {Counter, CurrencyIcon, Tab} from "@ya.praktikum/react-developer-burger-u
 import React, {useEffect, useRef} from "react";
 import IngredientsList from "../IngredientsList/IngredientsList";
 import Data from "../../data";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchIngredientsData} from "../../services/thunks/burgerConstructorThunks";
 
 const BurgerIngredients = (props) => {
-    const {className, onIngredientsClick, ingredientsData, ingredientsCount} = props
+    const {className, onIngredientsClick} = props
     const [current, setCurrent] = React.useState('bun');
+
+
 
     const ingredientsListRefs = useRef([]);
 
@@ -52,14 +56,11 @@ const BurgerIngredients = (props) => {
                 {ingredientsListDataRender.map(({type, title}, index) => {
                     return (
                         <IngredientsList
-                            ingredientsCount={ingredientsCount}
                             ref={setIngredientsListRefs(index)}
-                            ingredientsData={ingredientsData}
                             key={type}
                             title={title}
                             type={type}
                             id={type}
-                            onIngredientsClick={onIngredientsClick}
                         />
                     )
                 })}
