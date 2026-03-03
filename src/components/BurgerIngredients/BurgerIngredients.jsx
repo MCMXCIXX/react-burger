@@ -1,13 +1,10 @@
 import './BurgerIngredients.scss';
-import {Counter, CurrencyIcon, Tab} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {useEffect, useRef} from "react";
 import IngredientsList from "../IngredientsList/IngredientsList";
-import Data from "../../data";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchIngredientsData} from "../../services/thunks/burgerConstructorThunks";
+import {useSelector} from "react-redux";
 
-const BurgerIngredients = (props) => {
-    const {className, onIngredientsClick} = props
+const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('bun');
 
     const {loading, error} = useSelector(state => state.ingredientData);

@@ -31,9 +31,11 @@ const ingredientDataSlice = createSlice({
         builder
             .addCase(fetchIngredientsData.pending, (state, action) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(fetchIngredientsData.fulfilled, (state, action) => {
                 state.loading = false;
+                state.error = null;
                 state.ingredients = action.payload;
             })
             .addCase(fetchIngredientsData.rejected, (state, action) => {

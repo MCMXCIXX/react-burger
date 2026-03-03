@@ -31,7 +31,7 @@ export const addIngredientsThunk = (id) => {
 
 
         if (!ingredientObject) {
-            showNotificationWithTimeout(`Ингредиент с ID ${id} не найден.`)
+            dispatch(showNotificationWithTimeout(`Ингредиент с ID ${id} не найден.`))
             return
         }
 

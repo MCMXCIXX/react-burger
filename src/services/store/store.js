@@ -32,8 +32,15 @@ export const store = configureStore({
 })
 
 const saveStateFromLocalStorage = (state) =>{
-    const currentState = JSON.stringify(state);
-    localStorage.setItem("burgerConstructorState", currentState);
+
+    try {
+        const currentState = JSON.stringify(state);
+        localStorage.setItem("burgerConstructorState", currentState);
+    }
+     catch(err){
+         console.error('Ошибка сохранения в localStorage', err);
+         return undefined;
+     }
 }
 
 const debouncedSave = debounce(saveStateFromLocalStorage, 1000);
@@ -41,5 +48,6 @@ const debouncedSave = debounce(saveStateFromLocalStorage, 1000);
 
 store.subscribe(() => {
     const state = store.getState();
+
     debouncedSave(state.burgerConstructor);
 });
