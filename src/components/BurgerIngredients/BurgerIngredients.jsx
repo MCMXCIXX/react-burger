@@ -10,7 +10,7 @@ const BurgerIngredients = (props) => {
     const {className, onIngredientsClick} = props
     const [current, setCurrent] = React.useState('bun');
 
-
+    const {loading, error} = useSelector(state => state.ingredientData);
 
     const ingredientsListRefs = useRef([]);
 
@@ -31,6 +31,13 @@ const BurgerIngredients = (props) => {
     }, [current]);
 
 
+
+    if(loading){
+        return <h2>Загрузка...</h2>
+    }
+    if(error){
+        return <h2>{error}</h2>
+    }
     return (
         <div className="burger-ingredients pt-5">
             <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
@@ -66,7 +73,6 @@ const BurgerIngredients = (props) => {
                 })}
 
             </div>
-
 
         </div>
     )

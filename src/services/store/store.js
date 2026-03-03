@@ -2,6 +2,7 @@ import { burgerConstructorReducer } from "../reducers/burgerConstructorReducer";
 import {notificationReducer} from "../reducers/notificationReducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {debounce} from "../utils";
+import {ingredientDataReducer} from "../reducers/ingredientDataReducer";
 
 const loadStateFromLocalStorage = () => {
     const state = localStorage.getItem("burgerConstructorState");
@@ -17,12 +18,12 @@ const loadStateFromLocalStorage = () => {
         return undefined;
     }
 }
-const preloadedState = loadStateFromLocalStorage();
 
 export const store = configureStore({
     reducer: {
         burgerConstructor: burgerConstructorReducer,
         notification: notificationReducer,
+        ingredientData: ingredientDataReducer,
     },
     preloadedState: {
         burgerConstructor: loadStateFromLocalStorage(),
@@ -40,6 +41,5 @@ const debouncedSave = debounce(saveStateFromLocalStorage, 1000);
 
 store.subscribe(() => {
     const state = store.getState();
-
     debouncedSave(state.burgerConstructor);
 });

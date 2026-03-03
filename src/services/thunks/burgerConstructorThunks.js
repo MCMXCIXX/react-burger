@@ -1,44 +1,14 @@
-import {
-    addBunToConstructor,
-    addConstructorIngredient,
-    fetchIngredientsFailure,
-    fetchIngredientsRequest,
-    fetchIngredientsSuccess
-} from "../actions/burgerCosntructorActions";
-import {showNotificationThunk} from "./notificationThunks";
+import {addConstructorIngredient, addBunToConstructor} from "../reducers/burgerConstructorReducer";
+import {showNotificationWithTimeout} from "../reducers/notificationReducer";
 
-const URL = "https://raw.githubusercontent.com/MCMXCIXX/burger-ingredients-db/refs/heads/main/ingredients.json";
 const requiredType = 'bun'
-
-
-export const fetchIngredientsData = () => {
-    return (dispatch) => {
-        dispatch(fetchIngredientsRequest());
-
-        fetch(URL)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Не удалось загрузить данные. Статус: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                dispatch(fetchIngredientsSuccess(data));
-            })
-            .catch(err => {
-                const message = err.message || 'Неизвестная ошибка загрузки';
-                console.error(message);
-                dispatch(fetchIngredientsFailure(message));
-            });
-    }
-}
 
 
 const findIngredientThunk = (id) => {
 
     return (getState) => {
         const state = getState();
-        const baseIngredient = state.burgerConstructor.ingredientData.ingredients.find(ingredient => ingredient._id === id)
+        const baseIngredient = state.ingredientData.ingredients.find(ingredient => ingredient._id === id)
 
         if (baseIngredient) {
             const newBaseIngredient = {
@@ -52,7 +22,6 @@ const findIngredientThunk = (id) => {
     }
 }
 
-
 export const addIngredientsThunk = (id) => {
 
     return (dispatch, getState) => {
@@ -62,7 +31,7 @@ export const addIngredientsThunk = (id) => {
 
 
         if (!ingredientObject) {
-            // showNotification(`Ингредиент с ID ${id} не найден.`)
+            showNotificationWithTimeout(`Ингредиент с ID ${id} не найден.`)
             return
         }
 
@@ -72,7 +41,7 @@ export const addIngredientsThunk = (id) => {
                 dispatch(addBunToConstructor(ingredientObject));
 
             } else {
-                dispatch(showNotificationThunk('Достигнут лимит булок.'))
+                dispatch(showNotificationWithTimeout('Достигнут лимит булок.'))
 
             }
         }

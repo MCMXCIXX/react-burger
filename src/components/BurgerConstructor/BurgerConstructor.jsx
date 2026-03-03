@@ -1,8 +1,7 @@
 import './BurgerConstructor.scss';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteBunToConstructor, deleteConstructorIngredient} from "../../services/actions/burgerCosntructorActions";
+import {deleteConstructorIngredient, deleteBunToConstructor} from "../../services/reducers/burgerConstructorReducer";
 
 const BurgerConstructor = () => {
         const constructorData = useSelector(state => state.burgerConstructor.ingredients)
