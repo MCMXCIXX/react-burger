@@ -42,7 +42,11 @@ export const addIngredientsThunk = (id) => {
 
             } else {
 
-                dispatch(switchBun(ingredientObject))
+                if(ingredientObject._id !== state.burgerConstructor.bun._id){
+                    dispatch(switchBun(ingredientObject))
+                } else {
+                    dispatch(showNotificationWithTimeout(`Эту булка уже добавлена`))
+                }
 
             }
         }

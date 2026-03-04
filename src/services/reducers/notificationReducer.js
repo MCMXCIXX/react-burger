@@ -21,12 +21,16 @@ export const notificationSlice = createSlice({
     },
 })
 
+let hideNotificationTimerId = null;
 
 export const showNotificationWithTimeout  = (message) => {
     return (dispatch, getState) => {
         const state = getState();
         dispatch(showNotification(message))
-        setTimeout(() => {
+        if(hideNotificationTimerId){
+            clearTimeout(hideNotificationTimerId);
+        }
+        hideNotificationTimerId = setTimeout(() => {
             dispatch(hideNotification())
         }, state.notification.showTime)
     }
