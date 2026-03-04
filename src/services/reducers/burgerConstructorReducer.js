@@ -18,11 +18,20 @@ export const burgerConstructorSlice = createSlice({
             state.totalPrice += action.payload.price;
         },
         deleteConstructorIngredient(state, action) {
+
+
+            const exists = state.ingredients.some((item) => item.id === action.payload.id);
+            if (!exists) return;
+
             state.ingredients = state.ingredients.filter((item) => item.id !== action.payload.id);
             state.totalPrice = state.totalPrice - action.payload.price;
+
             const currentItemId = action.payload._id;
-            if (state.ingredientsCount[currentItemId] - 1 !== 0) {
-                state.ingredientsCount[currentItemId] -= 1;
+
+            const currentCount = state.ingredientsCount[currentItemId] ?? 0;
+
+            if (currentCount > 1) {
+                state.ingredientsCount[currentItemId] = currentCount - 1;
             } else {
                 delete state.ingredientsCount[currentItemId];
             }
@@ -39,10 +48,13 @@ export const burgerConstructorSlice = createSlice({
         },
         switchBun(state, action) {
             const prevBun = state.bun;
-            delete state.ingredientsCount[prevBun._id]
-            state.totalPrice -= prevBun.price * 2;
+            if(prevBun) {
+                delete state.ingredientsCount[prevBun._id]
+                state.totalPrice -= prevBun.price * 2;
+            }
+
             state.bun = (action.payload);
-            state.ingredientsCount[action.payload._id] = (state.ingredientsCount[action.payload._id] || 0) + 2;
+            state.ingredientsCount[action.payload._id] = 2;
             state.totalPrice += action.payload.price * 2;
         }
     }
