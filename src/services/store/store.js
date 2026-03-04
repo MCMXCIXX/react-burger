@@ -31,7 +31,7 @@ export const store = configureStore({
     }
 })
 
-const saveStateFromLocalStorage = (state) =>{
+const saveStateToLocalStorage = (state) =>{
 
     try {
         const currentState = JSON.stringify(state);
@@ -39,11 +39,10 @@ const saveStateFromLocalStorage = (state) =>{
     }
      catch(err){
          console.error('Ошибка сохранения в localStorage', err);
-         return undefined;
      }
 }
 
-const debouncedSave = debounce(saveStateFromLocalStorage, 1000);
+const debouncedSave = debounce(saveStateToLocalStorage, 1000);
 
 
 store.subscribe(() => {
