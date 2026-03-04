@@ -1,0 +1,20 @@
+# .coderabbit.yaml
+language: "ru-RU"                 # Все комментарии будут на русском
+early_access: false                # Отключаем ранний доступ (стабильная версия)
+
+reviews:
+  profile: "chill"                  # Умеренный уровень замечаний (можно "assertive" для более строгого)
+  request_changes_workflow: false   # Не запрашивать изменения автоматически
+  high_level_summary: true           # Показывать общий обзор PR
+  poem: false                        # Не писать стихи (отключаем креатив)
+  review_status: true                 # Показывать статус ревью
+  collapse_walkthrough: false         # Не сворачивать обзор изменений
+  auto_review:
+    enabled: true                     # Автоматически ревьюить новые PR
+    drafts: false                     # Не ревьюить черновики PR
+  path_filters:
+    - "!**/*.lock"                    # Игнорировать lock-файлы (опционально)
+    - "!**/*.log"                     # Игнорировать логи
+
+chat:
+  auto_reply: true                    # Автоматически отвечать в комментариях

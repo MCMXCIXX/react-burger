@@ -2,27 +2,25 @@ import './IngredientsList.scss';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {forwardRef, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addIngredientsThunk, fetchIngredientsData} from "../../services/thunks/burgerConstructorThunks";
+import {addIngredientsThunk} from "../../services/thunks/burgerConstructorThunks";
+import {fetchIngredientsData} from "../../services/reducers/ingredientDataReducer";
 
 const IngredientsList = forwardRef(((props, ref) => {
     const {type, title} = props
 
     const ingredientsCount = useSelector(state => state.burgerConstructor.ingredientsCount);
 
-    const {ingredients, messageError, loading} = useSelector(state => state.burgerConstructor.ingredientData)
+    const {ingredients} = useSelector(state => state.ingredientData);
+
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (!loading && ingredients.length === 0) {
-            dispatch(fetchIngredientsData());
-        }
-    }, [dispatch,loading, ingredients.length]);
+
 
     return (
         <>
             <h2 className="text text_type_main-medium mb-6 mt-10">{title}</h2>
             <ul ref={ref} data-type={type} id={type} className="ingredients-list__list">
-                {!loading && ingredients.filter((ingredient) => ingredient.type === type).map(ingredient =>
+                {ingredients.filter((ingredient) => ingredient.type === type).map(ingredient =>
                     <li key={ingredient._id} className="ingredients-list__list-item" id={ingredient._id}
 
                         onClick={() => {
