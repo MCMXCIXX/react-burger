@@ -6,16 +6,15 @@ const requiredType = 'bun'
 
 const findIngredientThunk = (id) => {
 
-    return (getState) => {
+    return (dispatch, getState) => {
         const state = getState();
         const baseIngredient = state.ingredientData.ingredients.find(ingredient => ingredient._id === id)
 
         if (baseIngredient) {
-            const newBaseIngredient = {
+            return   {
                 ...baseIngredient,
                 id: crypto.randomUUID(),
             }
-            return newBaseIngredient
         } else {
             return null
         }
