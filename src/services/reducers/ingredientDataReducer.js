@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
-const URL = "https://raw.пппgithubusercontent.com/MCMXCIXX/burger-ingredients-db/refs/heads/main/ingredients.json";
+const URL = "https://raw.githubusercontent.com/MCMXCIXX/burger-ingredients-db/refs/heads/main/ingredients.json";
 
 export const fetchIngredientsData = createAsyncThunk(
     "ingredientsData/fetchIngredientsData",
@@ -12,7 +12,8 @@ export const fetchIngredientsData = createAsyncThunk(
             }
             return await response.json();
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.message);
+            const message = error instanceof Error ? error.message : 'Неизвестная ошибка';
+            return thunkAPI.rejectWithValue(message);
         }
     }
 )
@@ -40,7 +41,7 @@ const ingredientDataSlice = createSlice({
             })
             .addCase(fetchIngredientsData.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload || 'Неизвестная ошибка';
             })
     }
 })

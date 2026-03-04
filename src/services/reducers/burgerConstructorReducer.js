@@ -36,6 +36,14 @@ export const burgerConstructorSlice = createSlice({
             state.bun = null;
             state.totalPrice -= action.payload.price * 2;
             delete state.ingredientsCount[action.payload._id];
+        },
+        switchBun(state, action) {
+            const prevBun = state.bun;
+            delete state.ingredientsCount[prevBun._id]
+            state.totalPrice -= prevBun.price * 2;
+            state.bun = (action.payload);
+            state.ingredientsCount[action.payload._id] = (state.ingredientsCount[action.payload._id] || 0) + 2;
+            state.totalPrice += action.payload.price * 2;
         }
     }
 })
@@ -44,7 +52,8 @@ export const {
     addConstructorIngredient,
     deleteConstructorIngredient,
     addBunToConstructor,
-    deleteBunToConstructor
+    deleteBunToConstructor,
+    switchBun,
 } = burgerConstructorSlice.actions;
 
 

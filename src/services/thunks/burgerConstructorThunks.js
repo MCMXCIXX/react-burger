@@ -1,4 +1,4 @@
-import {addConstructorIngredient, addBunToConstructor} from "../reducers/burgerConstructorReducer";
+import {addConstructorIngredient, addBunToConstructor, switchBun} from "../reducers/burgerConstructorReducer";
 import {showNotificationWithTimeout} from "../reducers/notificationReducer";
 
 const requiredType = 'bun'
@@ -41,7 +41,8 @@ export const addIngredientsThunk = (id) => {
                 dispatch(addBunToConstructor(ingredientObject));
 
             } else {
-                dispatch(showNotificationWithTimeout('Достигнут лимит булок.'))
+
+                dispatch(switchBun(ingredientObject))
 
             }
         }

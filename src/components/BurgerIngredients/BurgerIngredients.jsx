@@ -43,7 +43,7 @@ const BurgerIngredients = () => {
 
     if(error){
         return (
-            <div>6
+            <div>
                 <h2>{error}</h2>
                 <Button onClick={()=>{
                     dispatch(fetchIngredientsData())
