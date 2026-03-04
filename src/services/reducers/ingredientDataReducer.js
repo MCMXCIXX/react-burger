@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
-const URL = "https://raw.githubusercontent.com/MCMXCIXX/burger-ingredients-db/refs/heads/main/ingredients.json";
+const URL = "https://raw.пппgithubusercontent.com/MCMXCIXX/burger-ingredients-db/refs/heads/main/ingredients.json";
 
 export const fetchIngredientsData = createAsyncThunk(
     "ingredientsData/fetchIngredientsData",

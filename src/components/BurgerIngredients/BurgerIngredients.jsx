@@ -1,13 +1,14 @@
 import './BurgerIngredients.scss';
-import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import React, {useEffect, useRef} from "react";
 import IngredientsList from "../IngredientsList/IngredientsList";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchIngredientsData} from "../../services/reducers/ingredientDataReducer";
 
 const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('bun');
-
-    const {loading, error} = useSelector(state => state.ingredientData);
+    const dispatch = useDispatch();
+    const {ingredients, loading, error} = useSelector(state => state.ingredientData);
 
     const ingredientsListRefs = useRef([]);
 
@@ -28,12 +29,29 @@ const BurgerIngredients = () => {
     }, [current]);
 
 
+    useEffect(() => {
+        if (!loading && ingredients.length === 0 && !error) {
+            dispatch(fetchIngredientsData());
+        }
+    }, [dispatch, loading, ingredients.length, error]);
+
+
 
     if(loading){
         return <h2>Загрузка...</h2>
     }
+
     if(error){
-        return <h2>{error}</h2>
+        return (
+            <div>6
+                <h2>{error}</h2>
+                <Button onClick={()=>{
+                    dispatch(fetchIngredientsData())
+                }} htmlType="button" type="primary" size="medium">
+                    Повторить загрузку
+                </Button>
+            </div>
+        )
     }
     return (
         <div className="burger-ingredients pt-5">

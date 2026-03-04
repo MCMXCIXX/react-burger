@@ -10,15 +10,11 @@ const IngredientsList = forwardRef(((props, ref) => {
 
     const ingredientsCount = useSelector(state => state.burgerConstructor.ingredientsCount);
 
-    const {ingredients, loading, error} = useSelector(state => state.ingredientData);
+    const {ingredients} = useSelector(state => state.ingredientData);
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (!loading && ingredients.length === 0 && !error) {
-            dispatch(fetchIngredientsData());
-        }
-    }, [dispatch, loading, ingredients.length, error]);
+
 
     return (
         <>
