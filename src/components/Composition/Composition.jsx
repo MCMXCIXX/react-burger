@@ -8,7 +8,7 @@ export const Composition = (props) => {
         <ul className={styles.composition}>
             <li className={styles.composition__item}>
                 <p className="text text_type_main-default text_color_inactive">
-                    Калории,ккал
+                    Калории, ккал
                 </p>
                 <p className="text text_type_main-default text_color_inactive">
                     {ingredient.calories}

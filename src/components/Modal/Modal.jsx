@@ -13,8 +13,8 @@ const Modal = () => {
     const {modalIsOpen, typeModal, props} = useSelector(state => state.modal);
 
     const modalComponents = {
-        ingredientDetails: (props)=> <IngredientDetails ingredient={props.ingredient} />,
-        OrderDetails: (props)=> <OrderDetails />,
+        ingredientDetails: (props = {})=> props.ingredient ? <IngredientDetails ingredient={props.ingredient} /> : null,
+        OrderDetails: ()=> <OrderDetails />,
     }
 
     useEffect(() => {

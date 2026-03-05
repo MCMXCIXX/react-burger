@@ -4,6 +4,9 @@ import {IngredientLargeImage} from "../IngredientLargeImage/IngredientLargeImage
 
 const IngredientDetails = (props) => {
     const {ingredient} = props;
+    if(!ingredient){
+        return null;
+    }
     return (
         <div className={styles['ingredient-details']}>
             <p className="text text_type_main-large">
