@@ -4,10 +4,18 @@ import {useDispatch, useSelector} from "react-redux";
 import classNames from "classnames";
 import {closeModal} from "../../services/reducers/modalReducer";
 import {ModalOverlay} from "../ModalOverlay/ModalOverlay";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 const Modal = () => {
     const dispatch = useDispatch();
-    const {modalIsOpen, content} = useSelector(state => state.modal);
+    const {modalIsOpen, typeModal, props} = useSelector(state => state.modal);
+
+    const modalComponents = {
+        ingredientDetails: (props)=> <IngredientDetails ingredient={props.ingredient} />,
+    }
+    if (!modalIsOpen || !typeModal) return null;
+    const modalContent = modalComponents[typeModal]?.(props);
+
     return (
         <ModalOverlay modalIsOpen={modalIsOpen} >
             <div className={classNames('modal', `${modalIsOpen ? 'open' : ''}`)}>
@@ -16,7 +24,7 @@ const Modal = () => {
                 }} className="modal__close-button"><CloseIcon type="primary"/></button>
 
                 <div className="modal__inner">
-                    {content}
+                    {modalContent}
                 </div>
             </div>
         </ModalOverlay>

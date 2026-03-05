@@ -26,7 +26,14 @@ const IngredientsList = forwardRef(((props, ref) => {
                     <li key={ingredient._id} className="ingredients-list__list-item" id={ingredient._id}
 
                         onClick={() => {
-                            dispatch(openModal(<IngredientDetails ingredient={ingredient} />))
+                            dispatch(openModal(
+                                {
+                                    props: {
+                                        ingredient: ingredient
+                                    },
+                                    typeModal: "ingredientDetails",
+                                }
+                            ))
                         }}>
                         <div className="ingredients-list__image-wrapper mb-1 ml-4 mr-4">
                             <img src={ingredient.image} alt={ingredient.name} className="ingredients-list__image "/>
