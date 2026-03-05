@@ -34,7 +34,7 @@ const Modal = () => {
 
     if (!modalIsOpen || !typeModal) return null;
     const modalContent = modalComponents[typeModal]?.(props);
-
+    if (!modalContent) return null;
 
 
 
