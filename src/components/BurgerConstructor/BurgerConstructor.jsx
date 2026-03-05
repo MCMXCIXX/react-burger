@@ -73,7 +73,9 @@ const BurgerConstructor = () => {
                         type="primary"/>
                     </p>
                     <Button htmlType="button" onClick={()=>{
-                        dispatch(openModal('test'))
+                        dispatch(openModal({
+                            typeModal: "OrderDetails",
+                        }))
                     }} type="primary" size="medium">
                         Оформить заказ
                     </Button>
