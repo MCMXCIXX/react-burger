@@ -4,6 +4,8 @@ import React, {forwardRef, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addIngredientsThunk} from "../../services/thunks/burgerConstructorThunks";
 import {fetchIngredientsData} from "../../services/reducers/ingredientDataReducer";
+import {openModal} from "../../services/reducers/modalReducer";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 const IngredientsList = forwardRef(((props, ref) => {
     const {type, title} = props
@@ -24,7 +26,16 @@ const IngredientsList = forwardRef(((props, ref) => {
                     <li key={ingredient._id} className="ingredients-list__list-item" id={ingredient._id}
 
                         onClick={() => {
-                            dispatch(addIngredientsThunk(ingredient._id))
+                            dispatch(openModal(
+                                {
+                                    props: {
+                                        ingredient: ingredient,
+
+                                    },
+                                    typeModal: "ingredientDetails",
+                                    modalTitle: "Детали ингредиента",
+                                }
+                            ))
                         }}>
                         <div className="ingredients-list__image-wrapper mb-1 ml-4 mr-4">
                             <img src={ingredient.image} alt={ingredient.name} className="ingredients-list__image "/>

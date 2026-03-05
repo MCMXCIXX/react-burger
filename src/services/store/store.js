@@ -3,6 +3,7 @@ import {notificationReducer} from "../reducers/notificationReducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {debounce} from "../utils";
 import {ingredientDataReducer} from "../reducers/ingredientDataReducer";
+import modalReducer from "../reducers/modalReducer";
 
 const loadStateFromLocalStorage = () => {
     const state = localStorage.getItem("burgerConstructorState");
@@ -24,6 +25,7 @@ export const store = configureStore({
         burgerConstructor: burgerConstructorReducer,
         notification: notificationReducer,
         ingredientData: ingredientDataReducer,
+        modal: modalReducer,
     },
     preloadedState: {
         burgerConstructor: loadStateFromLocalStorage(),

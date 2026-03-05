@@ -7,6 +7,7 @@ import MainColumns from "./components/MainColumns/MainColumns";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 import UiMessage from "./components/UiMessage/UiMessage";
 import {useDispatch, useSelector} from "react-redux";
+import Modal from "./components/Modal/Modal";
 
 
 
@@ -19,6 +20,7 @@ function App() {
     return <>
 
         {(notificationMessage && <UiMessage text={notificationMessage} className={isShow ? 'visible' : 'hidden'} />)}
+        <Modal />
         <AppHeader/>
         <MainColumns>
             <BurgerIngredients/>
