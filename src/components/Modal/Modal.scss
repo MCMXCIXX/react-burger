@@ -1,0 +1,22 @@
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 40px;
+  max-width: 720px;
+  width: 100%;
+  background-color: var(--interface-modal-bg);
+
+  &.open {
+    display: block;
+  }
+  &__close-button {
+    position: absolute;
+    right: 43px;
+    top: 63px;
+    cursor: pointer;
+  }
+}

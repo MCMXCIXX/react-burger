@@ -2,6 +2,7 @@ import './BurgerConstructor.scss';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteConstructorIngredient, deleteBunToConstructor} from "../../services/reducers/burgerConstructorReducer";
+import {openModal} from "../../services/reducers/modalReducer";
 
 const BurgerConstructor = () => {
         const constructorData = useSelector(state => state.burgerConstructor.ingredients)
@@ -71,7 +72,9 @@ const BurgerConstructor = () => {
                     <p className="burger-constructor__total-value text text_type_main-large">{totalPrice} <CurrencyIcon
                         type="primary"/>
                     </p>
-                    <Button htmlType="button" type="primary" size="medium">
+                    <Button htmlType="button" onClick={()=>{
+                        dispatch(openModal('test'))
+                    }} type="primary" size="medium">
                         Оформить заказ
                     </Button>
                 </div>
