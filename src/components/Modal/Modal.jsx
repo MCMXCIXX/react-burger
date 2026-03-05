@@ -5,6 +5,7 @@ import classNames from "classnames";
 import {closeModal} from "../../services/reducers/modalReducer";
 import {ModalOverlay} from "../ModalOverlay/ModalOverlay";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import {useEffect} from "react";
 
 const Modal = () => {
     const dispatch = useDispatch();
@@ -13,11 +14,30 @@ const Modal = () => {
     const modalComponents = {
         ingredientDetails: (props)=> <IngredientDetails ingredient={props.ingredient} />,
     }
+
+    useEffect(() => {
+
+        const handleEsc = (e) => {
+            if(e.key === "Escape") {
+                dispatch(closeModal());
+            }
+        }
+
+        window.addEventListener("keydown", handleEsc);
+
+        return () => {
+            window.removeEventListener("keydown", handleEsc);
+        }
+    }, [dispatch]);
+
     if (!modalIsOpen || !typeModal) return null;
     const modalContent = modalComponents[typeModal]?.(props);
 
+
+
+
     return (
-        <ModalOverlay modalIsOpen={modalIsOpen} >
+        <ModalOverlay modalIsOpen={modalIsOpen}  >
             <div className={classNames('modal', `${modalIsOpen ? 'open' : ''}`)}>
                 <button onClick={() => {
                     dispatch(closeModal());
