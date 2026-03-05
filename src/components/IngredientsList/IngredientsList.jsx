@@ -29,9 +29,11 @@ const IngredientsList = forwardRef(((props, ref) => {
                             dispatch(openModal(
                                 {
                                     props: {
-                                        ingredient: ingredient
+                                        ingredient: ingredient,
+
                                     },
                                     typeModal: "ingredientDetails",
+                                    modalTitle: "Детали ингредиента",
                                 }
                             ))
                         }}>

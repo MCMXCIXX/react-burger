@@ -75,6 +75,7 @@ const BurgerConstructor = () => {
                     <Button htmlType="button" onClick={()=>{
                         dispatch(openModal({
                             typeModal: "OrderDetails",
+                            modalTitle: "Детали заказа"
                         }))
                     }} type="primary" size="medium">
                         Оформить заказ

@@ -10,7 +10,7 @@ import {OrderDetails} from "../OrderDetails/OrderDetails";
 
 const Modal = () => {
     const dispatch = useDispatch();
-    const {modalIsOpen, typeModal, props} = useSelector(state => state.modal);
+    const {modalIsOpen, typeModal, props, modalTitle} = useSelector(state => state.modal);
 
     const modalComponents = {
         ingredientDetails: (props = {})=> props.ingredient ? <IngredientDetails ingredient={props.ingredient} /> : null,
@@ -40,8 +40,13 @@ const Modal = () => {
 
     return (
         <ModalOverlay modalIsOpen={modalIsOpen}  >
-            <div className={classNames('modal', `${modalIsOpen ? 'open' : ''}`)}>
-                <button onClick={() => {
+            <div
+                className={"modal"}
+                role="dialog"
+                aria-modal="true"
+                aria-label={ modalTitle ?? "Модальное окно"}
+            >
+                <button aria-label="Закрыть модальное окно" onClick={() => {
                     dispatch(closeModal());
                 }} className="modal__close-button"><CloseIcon type="primary"/></button>
 
