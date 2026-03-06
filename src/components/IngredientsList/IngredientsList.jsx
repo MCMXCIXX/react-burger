@@ -20,8 +20,8 @@ const IngredientsList = forwardRef(((props, ref) => {
 
     return (
         <>
-            <h2 className="text text_type_main-medium mb-6 mt-10">{title}</h2>
-            <ul ref={ref} data-type={type} id={type} className="ingredients-list__list">
+            <h2 id={type} data-type={type} ref={ref} className="ingredients-list__title text text_type_main-medium mb-6 mt-10">{title}</h2>
+            <ul  className="ingredients-list__list">
                 {ingredients.filter((ingredient) => ingredient.type === type).map(ingredient =>
                     <li key={ingredient._id} className="ingredients-list__list-item" id={ingredient._id}
 
