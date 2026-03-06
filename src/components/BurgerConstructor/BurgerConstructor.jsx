@@ -3,6 +3,7 @@ import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/
 import {useDispatch, useSelector} from "react-redux";
 import {deleteConstructorIngredient, deleteBunToConstructor} from "../../services/reducers/burgerConstructorReducer";
 import {openModal} from "../../services/reducers/modalReducer";
+import {IngredientPlaceholder} from "../IngredientPlaceholder/IngredientPlaceholder";
 
 const BurgerConstructor = () => {
         const constructorData = useSelector(state => state.burgerConstructor.ingredients)
@@ -17,7 +18,7 @@ const BurgerConstructor = () => {
 
 
                         {
-                            (bun && <li className="burger-constructor__item burger-constructor__item--require" key={bun.id}>
+                            (bun ? <li className="burger-constructor__item burger-constructor__item--require" key={bun.id}>
                                 <ConstructorElement
                                     type={"top"}
                                     text={`${bun.name} верх`}
@@ -27,12 +28,12 @@ const BurgerConstructor = () => {
                                         dispatch(deleteBunToConstructor(bun))
                                     }}
                                 />
-                            </li>)
+                            </li> : <IngredientPlaceholder text={'Выберите булку'} />)
                         }
 
 
                         {
-                            (hasIngredients && constructorData.filter((ingredient) => ingredient.type !== "bun").map((ingredient, index) => (
+                            (hasIngredients ? constructorData.filter((ingredient) => ingredient.type !== "bun").map((ingredient) => (
                                 <li className="burger-constructor__item" key={ingredient.id}>
                                     <div className="burger-constructor__item-icon">
                                         <DragIcon type="primary"/>
@@ -46,13 +47,13 @@ const BurgerConstructor = () => {
                                         }}
                                     />
                                 </li>
-                            )))
+                            )) : <IngredientPlaceholder text={'Выберите начинку'} />)
 
                         }
 
 
                         {
-                            (bun && <li className="burger-constructor__item burger-constructor__item--require"
+                            (bun ? <li className="burger-constructor__item burger-constructor__item--require"
                                         key={`${bun.id}${bun.id}`}>
                                 <ConstructorElement
                                     type={"bottom"}
@@ -63,7 +64,7 @@ const BurgerConstructor = () => {
                                         dispatch(deleteBunToConstructor(bun))
                                     }}
                                 />
-                            </li>)
+                            </li> :  <IngredientPlaceholder text={'Выберите булку'} />)
                         }
                     </ul>)
                 }
