@@ -10,8 +10,6 @@ import {useDispatch, useSelector} from "react-redux";
 import Modal from "./components/Modal/Modal";
 
 
-
-
 function App() {
 
     const {notificationMessage, isShow} = useSelector(state => state.notification)
@@ -19,13 +17,15 @@ function App() {
 
     return <>
 
-        {(notificationMessage && <UiMessage text={notificationMessage} className={isShow ? 'visible' : 'hidden'} />)}
-        <Modal />
-        <AppHeader/>
-        <MainColumns>
-            <BurgerIngredients/>
-            <BurgerConstructor/>
-        </MainColumns>
+        {(notificationMessage && <UiMessage text={notificationMessage} className={isShow ? 'visible' : 'hidden'}/>)}
+        <Modal/>
+        <div className="main-wrapper-content">
+            <AppHeader/>
+            <MainColumns>
+                <BurgerIngredients/>
+                <BurgerConstructor/>
+            </MainColumns>
+        </div>
 
 
     </>

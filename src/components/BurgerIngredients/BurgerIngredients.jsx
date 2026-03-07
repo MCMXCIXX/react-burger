@@ -30,9 +30,8 @@ const BurgerIngredients = () => {
 
     useEffect(() => {
         const currentBlock = burgerIngredientsBlock.current;
-        const burgerIngredientsBlockTop = currentBlock.getBoundingClientRect().top;
         if (currentBlock) {
-
+            const burgerIngredientsBlockTop = currentBlock.getBoundingClientRect().top;
             const scrollEvent = () => {
                 // const sortItem = ingredientsListRefs.current.map((item) => item.getBoundingClientRect().y - burgerIngredientsBlockTop ).filter((item) => item > 0)
                 // console.log(sortItem);
@@ -50,7 +49,6 @@ const BurgerIngredients = () => {
                     }
                 })
 
-                console.log();
                 setCurrent(ingredientsListRefs.current[tabIndex].id)
             }
 
