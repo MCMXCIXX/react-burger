@@ -48,7 +48,6 @@ const BurgerIngredients = () => {
                     }
                 })
 
-                setCurrent(ingredientsListRefs.current[tabIndex].id)
                 const activeNode = ingredientsListRefs.current[tabIndex];
                 if(activeNode?.id) {
                     setCurrent(activeNode.id)
@@ -113,7 +112,7 @@ const BurgerIngredients = () => {
 
             </div>
 
-            <div ref={burgerIngredientsBlock} className="burger-ingredients__list-warpper">
+            <div ref={burgerIngredientsBlock} className="burger-ingredients__list-wrapper">
 
                 {ingredientsListDataRender.map(({type, title}, index) => {
                     return (
