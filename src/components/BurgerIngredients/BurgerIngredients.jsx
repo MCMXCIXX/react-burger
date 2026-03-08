@@ -31,10 +31,9 @@ const BurgerIngredients = () => {
     useEffect(() => {
         const currentBlock = burgerIngredientsBlock.current;
         if (currentBlock) {
-            const burgerIngredientsBlockTop = currentBlock.getBoundingClientRect().top;
+
             const scrollEvent = () => {
-                // const sortItem = ingredientsListRefs.current.map((item) => item.getBoundingClientRect().y - burgerIngredientsBlockTop ).filter((item) => item > 0)
-                // console.log(sortItem);
+                const burgerIngredientsBlockTop = currentBlock.getBoundingClientRect().top;
 
                 let tabIndex = 0;
                 let minValue = Infinity;
@@ -50,12 +49,19 @@ const BurgerIngredients = () => {
                 })
 
                 setCurrent(ingredientsListRefs.current[tabIndex].id)
+                const activeNode = ingredientsListRefs.current[tabIndex];
+                if(activeNode?.id) {
+                    setCurrent(activeNode.id)
+                }
             }
 
             const debouncedScrollEvent = debounce(scrollEvent, 25);
             currentBlock.addEventListener("scroll", debouncedScrollEvent)
 
-            return () => currentBlock.removeEventListener('scroll', debouncedScrollEvent);
+            return () => {
+                debouncedScrollEvent.cancel?.();
+                currentBlock.removeEventListener('scroll', debouncedScrollEvent);
+            }
         }
 
     }, [ingredients]);
