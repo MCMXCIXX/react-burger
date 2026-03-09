@@ -1,7 +1,7 @@
 import './MainColumns.scss';
 
 const MainColumns = (props) => {
-    const {className, children} = props
+    const {children} = props
     return <div className="main-colonums container">{children}</div>;
 };
 

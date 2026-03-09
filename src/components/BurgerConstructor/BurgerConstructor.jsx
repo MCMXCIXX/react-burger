@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {deleteConstructorIngredient, deleteBunToConstructor} from "../../services/reducers/burgerConstructorReducer";
 import {openModal} from "../../services/reducers/modalReducer";
 import {IngredientPlaceholder} from "../IngredientPlaceholder/IngredientPlaceholder";
+import {useDrop} from "react-dnd";
+import {addIngredientsThunk} from "../../services/thunks/burgerConstructorThunks";
 
 const BurgerConstructor = () => {
         const constructorData = useSelector(state => state.burgerConstructor.ingredients)
@@ -11,10 +13,22 @@ const BurgerConstructor = () => {
         const bun = useSelector(state => state.burgerConstructor.bun)
         const dispatch = useDispatch();
         const hasIngredients = constructorData.length > 0;
+
+
+        const [{dragItemType}, dropTarget] = useDrop({
+            accept: "ingredient",
+            drop(item) {
+                dispatch(addIngredientsThunk(item.id));
+            },
+            collect: (monitor) => ({
+                dragItemType: monitor.getItem()?.type,
+            })
+        });
+
         return (
             <div className="burger-constructor">
                 {
-                    (<ul className="burger-constructor__list">
+                    (<ul ref={dropTarget} className="burger-constructor__list">
 
 
                         {
@@ -28,7 +42,7 @@ const BurgerConstructor = () => {
                                         dispatch(deleteBunToConstructor(bun))
                                     }}
                                 />
-                            </li> : <IngredientPlaceholder text={'Выберите булку'} />)
+                            </li> : <IngredientPlaceholder accentPlaceholder={dragItemType === 'bun'} text={'Выберите булку'}/>)
                         }
 
 
@@ -47,14 +61,14 @@ const BurgerConstructor = () => {
                                         }}
                                     />
                                 </li>
-                            )) : <IngredientPlaceholder text={'Выберите начинку'} />)
+                            )) : <IngredientPlaceholder accentPlaceholder={dragItemType !== 'bun' && dragItemType} text={'Выберите начинку'}/>)
 
                         }
 
 
                         {
                             (bun ? <li className="burger-constructor__item burger-constructor__item--require"
-                                        key={`${bun.id}${bun.id}`}>
+                                       key={`${bun.id}${bun.id}`}>
                                 <ConstructorElement
                                     type={"bottom"}
                                     text={`${bun.name} низ`}
@@ -64,7 +78,7 @@ const BurgerConstructor = () => {
                                         dispatch(deleteBunToConstructor(bun))
                                     }}
                                 />
-                            </li> :  <IngredientPlaceholder text={'Выберите булку'} />)
+                            </li> : <IngredientPlaceholder accentPlaceholder={dragItemType === 'bun'} text={'Выберите булку'}/>)
                         }
                     </ul>)
                 }
@@ -73,7 +87,7 @@ const BurgerConstructor = () => {
                     <p className="burger-constructor__total-value text text_type_main-large">{totalPrice} <CurrencyIcon
                         type="primary"/>
                     </p>
-                    <Button htmlType="button" onClick={()=>{
+                    <Button htmlType="button" onClick={() => {
                         dispatch(openModal({
                             typeModal: "OrderDetails",
                             modalTitle: "Детали заказа"

@@ -18,7 +18,6 @@ const BurgerIngredients = () => {
     ]
 
     const setIngredientsListRefs = (index) => (node) => {
-
         ingredientsListRefs.current[index] = node;
     };
 

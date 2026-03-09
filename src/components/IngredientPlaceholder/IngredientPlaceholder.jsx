@@ -4,10 +4,10 @@ import classNames from "classnames";
 
 
 export const IngredientPlaceholder = (props) => {
-  const {text, className = 'ingredient'} = props;
+  const {text, className = 'ingredient', accentPlaceholder} = props;
 
     return (
-        <div className={classNames(styles['ingredient-placeholder'], styles[className])}>
+        <div style={accentPlaceholder ? { border: '1px dashed #fff' } : {}} className={classNames(styles['ingredient-placeholder'], styles[className])}>
           <p className={styles['ingredient-placeholder__text']}>{text}</p>
         </div>
     );
