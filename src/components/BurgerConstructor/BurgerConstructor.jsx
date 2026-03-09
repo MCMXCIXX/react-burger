@@ -6,6 +6,7 @@ import {openModal} from "../../services/reducers/modalReducer";
 import {IngredientPlaceholder} from "../IngredientPlaceholder/IngredientPlaceholder";
 import {useDrop} from "react-dnd";
 import {addIngredientsThunk} from "../../services/thunks/burgerConstructorThunks";
+import {BurgerConstructorItem} from "../BurgerConstructorItem/BurgerConstructorItem";
 
 const BurgerConstructor = () => {
         const constructorData = useSelector(state => state.burgerConstructor.ingredients)
@@ -47,20 +48,8 @@ const BurgerConstructor = () => {
 
 
                         {
-                            (hasIngredients ? constructorData.filter((ingredient) => ingredient.type !== "bun").map((ingredient) => (
-                                <li className="burger-constructor__item" key={ingredient.id}>
-                                    <div className="burger-constructor__item-icon">
-                                        <DragIcon type="primary"/>
-                                    </div>
-                                    <ConstructorElement
-                                        text={ingredient.name}
-                                        price={ingredient.price}
-                                        thumbnail={ingredient.image}
-                                        handleClose={() => {
-                                            dispatch(deleteConstructorIngredient(ingredient));
-                                        }}
-                                    />
-                                </li>
+                            (hasIngredients ? constructorData.map((ingredient) => (
+                                <BurgerConstructorItem ingredient={ingredient} />
                             )) : <IngredientPlaceholder accentPlaceholder={dragItemType !== 'bun' && dragItemType} text={'Выберите начинку'}/>)
 
                         }
