@@ -63,7 +63,7 @@ export const BurgerConstructorItem = (props) => {
     const additionalProps = typeElement !== 'bun'
         ? {
             ref: ref,
-            style: {opacity},
+            style: {opacity,cursor: 'move'},
             'data-handler-id': handlerId,
         }
         : {};
