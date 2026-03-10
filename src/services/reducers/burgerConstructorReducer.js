@@ -56,7 +56,13 @@ export const burgerConstructorSlice = createSlice({
             state.bun = (action.payload);
             state.ingredientsCount[action.payload._id] = 2;
             state.totalPrice += action.payload.price * 2;
-        }
+        },
+        moveIngredient(state, action) {
+            const { dragIndex, hoverIndex } = action.payload;
+            // Копируем массив (Immer позволяет «мутировать», но мы работаем с draft)
+            const [removed] = state.ingredients.splice(dragIndex, 1);
+            state.ingredients.splice(hoverIndex, 0, removed);
+        },
     }
 })
 
@@ -66,6 +72,7 @@ export const {
     addBunToConstructor,
     deleteBunToConstructor,
     switchBun,
+    moveIngredient,
 } = burgerConstructorSlice.actions;
 
 
