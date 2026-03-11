@@ -4,6 +4,7 @@ import React, {useEffect, useRef} from "react";
 import IngredientsList from "../IngredientsList/IngredientsList";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchIngredientsData} from "../../services/reducers/ingredientDataReducer";
+import {debounce} from "../../services/utils";
 
 const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('bun');
@@ -11,22 +12,57 @@ const BurgerIngredients = () => {
     const {ingredients, loading, error} = useSelector(state => state.ingredientData);
 
     const ingredientsListRefs = useRef([]);
-
+    const burgerIngredientsBlock = useRef(null);
     const ingredientsListDataRender = [
         {title: "Булки", type: "bun"}, {title: "Начинка", type: "main"}, {title: "Соусы", type: "sauce"},
     ]
 
     const setIngredientsListRefs = (index) => (node) => {
-
         ingredientsListRefs.current[index] = node;
     };
 
-    useEffect(() => {
-
-        const node = ingredientsListRefs.current.find((n) => n?.dataset?.type === current);
+    const tabScroll = (type) => {
+        const node = ingredientsListRefs.current.find((n) => n?.dataset?.type === type);
         node?.scrollIntoView({behavior: "smooth", block: "start"});
+    }
 
-    }, [current]);
+
+    useEffect(() => {
+        const currentBlock = burgerIngredientsBlock.current;
+        if (currentBlock) {
+
+            const scrollEvent = () => {
+                const burgerIngredientsBlockTop = currentBlock.getBoundingClientRect().top;
+
+                let tabIndex = 0;
+                let minValue = Infinity;
+
+                ingredientsListRefs.current.forEach((item, index) => {
+                    if(!item) return;
+
+                    const itemRect = Math.abs(item.getBoundingClientRect().top - burgerIngredientsBlockTop);
+                    if( itemRect < minValue) {
+                        minValue = itemRect;
+                        tabIndex = index;
+                    }
+                })
+
+                const activeNode = ingredientsListRefs.current[tabIndex];
+                if(activeNode?.id) {
+                    setCurrent(activeNode.id)
+                }
+            }
+
+            const debouncedScrollEvent = debounce(scrollEvent, 25);
+            currentBlock.addEventListener("scroll", debouncedScrollEvent)
+
+            return () => {
+                debouncedScrollEvent.cancel?.();
+                currentBlock.removeEventListener('scroll', debouncedScrollEvent);
+            }
+        }
+
+    }, [ingredients]);
 
 
     useEffect(() => {
@@ -36,16 +72,15 @@ const BurgerIngredients = () => {
     }, [dispatch, loading, ingredients.length, error]);
 
 
-
-    if(loading){
+    if (loading) {
         return <h2>Загрузка...</h2>
     }
 
-    if(error){
+    if (error) {
         return (
             <div>
                 <h2>{error}</h2>
-                <Button onClick={()=>{
+                <Button onClick={() => {
                     dispatch(fetchIngredientsData())
                 }} htmlType="button" type="primary" size="medium">
                     Повторить загрузку
@@ -53,6 +88,7 @@ const BurgerIngredients = () => {
             </div>
         )
     }
+
     return (
         <div className="burger-ingredients pt-5">
             <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
@@ -64,7 +100,9 @@ const BurgerIngredients = () => {
                             value={type}
                             active={current === type}
                             key={type}
-                            onClick={setCurrent}>
+                            onClick={()=>{
+                                tabScroll(type)
+                            }}>
                             {title}
                         </Tab>
                     )
@@ -73,7 +111,7 @@ const BurgerIngredients = () => {
 
             </div>
 
-            <div className="burger-ingredients__list-warpper">
+            <div ref={burgerIngredientsBlock} className="burger-ingredients__list-wrapper">
 
                 {ingredientsListDataRender.map(({type, title}, index) => {
                     return (

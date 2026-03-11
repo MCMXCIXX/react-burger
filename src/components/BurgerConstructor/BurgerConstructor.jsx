@@ -1,8 +1,16 @@
 import './BurgerConstructor.scss';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteConstructorIngredient, deleteBunToConstructor} from "../../services/reducers/burgerConstructorReducer";
+import {
+    deleteConstructorIngredient,
+    deleteBunToConstructor,
+    submitOrder
+} from "../../services/reducers/burgerConstructorReducer";
 import {openModal} from "../../services/reducers/modalReducer";
+import {IngredientPlaceholder} from "../IngredientPlaceholder/IngredientPlaceholder";
+import {useDrop} from "react-dnd";
+import {addIngredientsThunk} from "../../services/thunks/burgerConstructorThunks";
+import {BurgerConstructorItem} from "../BurgerConstructorItem/BurgerConstructorItem";
 
 const BurgerConstructor = () => {
         const constructorData = useSelector(state => state.burgerConstructor.ingredients)
@@ -10,60 +18,80 @@ const BurgerConstructor = () => {
         const bun = useSelector(state => state.burgerConstructor.bun)
         const dispatch = useDispatch();
         const hasIngredients = constructorData.length > 0;
+
+
+
+        const [{dragItemType}, dropTarget] = useDrop({
+            accept: "ingredient",
+            drop(item) {
+                dispatch(addIngredientsThunk(item.id));
+            },
+            collect: (monitor) => ({
+                dragItemType: monitor.getItem()?.type,
+            })
+        });
+
+
+    const handleOrder = () => {
+        const ingredientIds = constructorData.map(item => item._id);
+        if (bun) ingredientIds.unshift(bun._id, bun._id); // если булки отдельно
+        dispatch(submitOrder(ingredientIds));
+    };
         return (
             <div className="burger-constructor">
                 {
-                    (<ul className="burger-constructor__list">
-
-
+                    (<ul ref={dropTarget} className="burger-constructor__list">
                         {
-                            (bun && <li className="burger-constructor__item burger-constructor__item--require" key={bun.id}>
-                                <ConstructorElement
-                                    type={"top"}
-                                    text={`${bun.name} верх`}
-                                    price={bun.price}
-                                    thumbnail={bun.image}
-                                    handleClose={() => {
-                                        dispatch(deleteBunToConstructor(bun))
+                            (bun ? <BurgerConstructorItem
+                                    elementProps={{
+                                        type: "top",
+                                        text: `${bun.name} верх`,
+                                        price: bun.price,
+                                        thumbnail: bun.image,
+                                        handleClose: () => {
+                                            dispatch(deleteBunToConstructor(bun))
+                                        },
                                     }}
-                                />
-                            </li>)
+                                    typeElement={'bun'}
+                                    id={bun.id}
+                                /> :
+                                <IngredientPlaceholder accentPlaceholder={dragItemType === 'bun'} text={'Выберите булку'}/>)
                         }
 
 
                         {
-                            (hasIngredients && constructorData.filter((ingredient) => ingredient.type !== "bun").map((ingredient, index) => (
-                                <li className="burger-constructor__item" key={ingredient.id}>
-                                    <div className="burger-constructor__item-icon">
-                                        <DragIcon type="primary"/>
-                                    </div>
-                                    <ConstructorElement
-                                        text={ingredient.name}
-                                        price={ingredient.price}
-                                        thumbnail={ingredient.image}
-                                        handleClose={() => {
-                                            dispatch(deleteConstructorIngredient(ingredient));
-                                        }}
-                                    />
-                                </li>
-                            )))
+                            (hasIngredients ? constructorData.map((ingredient, index) => (
+                                <BurgerConstructorItem
+                                    elementProps={{
+                                        text: ingredient.name,
+                                        price: ingredient.price,
+                                        thumbnail: ingredient.image,
+                                        handleClose: () => {
+                                            dispatch(deleteConstructorIngredient(ingredient))
+                                        },
+                                    }} index={index} id={ingredient.id}
+                                    key={ingredient.id}/>
+                            )) : <IngredientPlaceholder accentPlaceholder={dragItemType !== 'bun' && dragItemType}
+                                                        text={'Выберите начинку'}/>)
 
                         }
 
 
                         {
-                            (bun && <li className="burger-constructor__item burger-constructor__item--require"
-                                        key={`${bun.id}${bun.id}`}>
-                                <ConstructorElement
-                                    type={"bottom"}
-                                    text={`${bun.name} низ`}
-                                    price={bun.price}
-                                    thumbnail={bun.image}
-                                    handleClose={() => {
-                                        dispatch(deleteBunToConstructor(bun))
+                            (bun ? <BurgerConstructorItem
+                                    elementProps={{
+                                        type: "bottom",
+                                        text: `${bun.name} низ`,
+                                        price: bun.price,
+                                        thumbnail: bun.image,
+                                        handleClose: () => {
+                                            dispatch(deleteBunToConstructor(bun))
+                                        },
                                     }}
-                                />
-                            </li>)
+                                    typeElement={'bun'}
+                                    id={bun.id}
+                                />  :
+                                <IngredientPlaceholder accentPlaceholder={dragItemType === 'bun'} text={'Выберите булку'}/>)
                         }
                     </ul>)
                 }
@@ -72,11 +100,9 @@ const BurgerConstructor = () => {
                     <p className="burger-constructor__total-value text text_type_main-large">{totalPrice} <CurrencyIcon
                         type="primary"/>
                     </p>
-                    <Button htmlType="button" onClick={()=>{
-                        dispatch(openModal({
-                            typeModal: "OrderDetails",
-                            modalTitle: "Детали заказа"
-                        }))
+                    <Button htmlType="button" onClick={() => {
+                        handleOrder()
+
                     }} type="primary" size="medium">
                         Оформить заказ
                     </Button>

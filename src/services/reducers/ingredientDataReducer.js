@@ -1,22 +1,19 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-
-const URL = "https://raw.githubusercontent.com/MCMXCIXX/burger-ingredients-db/refs/heads/main/ingredients.json";
+import {request} from "../api";
 
 export const fetchIngredientsData = createAsyncThunk(
-    "ingredientsData/fetchIngredientsData",
-    async (agr, thunkAPI) => {
+    'ingredients/fetchIngredients',
+    async (_, { rejectWithValue }) => {
         try {
-            const response = await fetch(URL);
-            if (!response.ok) {
-                return thunkAPI.rejectWithValue('Ошибка сервера');
-            }
-            return await response.json();
-        } catch (error) {
-            const message = error instanceof Error ? error.message : 'Неизвестная ошибка';
-            return thunkAPI.rejectWithValue(message);
+            const data = await request('/ingredients');
+            // Обрати внимание: бэкенд может возвращать объект вида { data: [...] }
+            // Посмотри в ответе сервера, возможно нужен data.data
+            return data.data; // или просто data, смотря что приходит
+        } catch (err) {
+            return rejectWithValue(err.message);
         }
     }
-)
+);
 
 const initialState = {
     ingredients: [],

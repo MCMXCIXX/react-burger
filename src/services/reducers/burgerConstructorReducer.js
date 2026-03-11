@@ -1,4 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {request} from "../api";
 
 const initialState = {
     ingredients: [],
@@ -7,6 +8,22 @@ const initialState = {
     ingredientsCount: {},
     maxRequiredIngredients: 2,
 }
+
+export const submitOrder = createAsyncThunk(
+    'order/submitOrder',
+    async (ingredientIds, { rejectWithValue, getState }) => {
+        try {
+            // Здесь может пригодиться токен авторизации, но пока без него
+            const data = await request('/orders', {
+                method: 'POST',
+                body: JSON.stringify({ ingredients: ingredientIds }),
+            });
+            return data.order.number; // предположим, сервер возвращает номер заказа
+        } catch (err) {
+            return rejectWithValue(err.message);
+        }
+    }
+);
 
 export const burgerConstructorSlice = createSlice({
     name: "burgerConstructor",
@@ -56,7 +73,13 @@ export const burgerConstructorSlice = createSlice({
             state.bun = (action.payload);
             state.ingredientsCount[action.payload._id] = 2;
             state.totalPrice += action.payload.price * 2;
-        }
+        },
+        moveIngredient(state, action) {
+            const { dragIndex, hoverIndex } = action.payload;
+            // Копируем массив (Immer позволяет «мутировать», но мы работаем с draft)
+            const [removed] = state.ingredients.splice(dragIndex, 1);
+            state.ingredients.splice(hoverIndex, 0, removed);
+        },
     }
 })
 
@@ -66,6 +89,7 @@ export const {
     addBunToConstructor,
     deleteBunToConstructor,
     switchBun,
+    moveIngredient,
 } = burgerConstructorSlice.actions;
 
 

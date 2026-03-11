@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-height: 800px;
+    max-height: 550px;
     overflow: auto;
     scrollbar-gutter: stable;
   }
@@ -27,4 +27,6 @@
   &__item--require:nth-child(2) {
     order: 100;
   }
+
+
 }

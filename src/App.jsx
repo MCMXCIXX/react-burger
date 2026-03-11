@@ -8,8 +8,8 @@ import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor"
 import UiMessage from "./components/UiMessage/UiMessage";
 import {useDispatch, useSelector} from "react-redux";
 import Modal from "./components/Modal/Modal";
-
-
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 
 function App() {
@@ -19,13 +19,18 @@ function App() {
 
     return <>
 
-        {(notificationMessage && <UiMessage text={notificationMessage} className={isShow ? 'visible' : 'hidden'} />)}
-        <Modal />
-        <AppHeader/>
-        <MainColumns>
-            <BurgerIngredients/>
-            <BurgerConstructor/>
-        </MainColumns>
+        {(notificationMessage && <UiMessage text={notificationMessage} className={isShow ? 'visible' : 'hidden'}/>)}
+        <Modal/>
+        <div className="main-wrapper-content">
+            <AppHeader/>
+            <DndProvider backend={HTML5Backend}>
+                <MainColumns>
+                    <BurgerIngredients/>
+                    <BurgerConstructor/>
+                </MainColumns>
+            </DndProvider>
+
+        </div>
 
 
     </>
