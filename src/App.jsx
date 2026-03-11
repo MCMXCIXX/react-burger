@@ -10,6 +10,10 @@ import {useDispatch, useSelector} from "react-redux";
 import Modal from "./components/Modal/Modal";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
+import {HomePage} from "./pages/HomePage/HomePage";
+import {FeedPage} from "./pages/FeedPage/FeedPage";
+import {ProfilePage} from "./pages/ProfilePage/ProfilePage";
+import {Route, Routes} from "react-router-dom";
 
 
 function App() {
@@ -20,17 +24,15 @@ function App() {
     return <>
 
         {(notificationMessage && <UiMessage text={notificationMessage} className={isShow ? 'visible' : 'hidden'}/>)}
-        <Modal/>
-        <div className="main-wrapper-content">
+            <Modal/>
             <AppHeader/>
-            <DndProvider backend={HTML5Backend}>
-                <MainColumns>
-                    <BurgerIngredients/>
-                    <BurgerConstructor/>
-                </MainColumns>
-            </DndProvider>
 
-        </div>
+
+            <Routes>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/feed" element={<FeedPage/>}/>
+                <Route path="/profile" element={<ProfilePage/>}/>
+            </Routes>
 
 
     </>
