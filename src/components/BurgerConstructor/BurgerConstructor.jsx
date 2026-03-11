@@ -1,7 +1,11 @@
 import './BurgerConstructor.scss';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteConstructorIngredient, deleteBunToConstructor} from "../../services/reducers/burgerConstructorReducer";
+import {
+    deleteConstructorIngredient,
+    deleteBunToConstructor,
+    submitOrder
+} from "../../services/reducers/burgerConstructorReducer";
 import {openModal} from "../../services/reducers/modalReducer";
 import {IngredientPlaceholder} from "../IngredientPlaceholder/IngredientPlaceholder";
 import {useDrop} from "react-dnd";
@@ -16,6 +20,7 @@ const BurgerConstructor = () => {
         const hasIngredients = constructorData.length > 0;
 
 
+
         const [{dragItemType}, dropTarget] = useDrop({
             accept: "ingredient",
             drop(item) {
@@ -27,6 +32,11 @@ const BurgerConstructor = () => {
         });
 
 
+    const handleOrder = () => {
+        const ingredientIds = constructorData.map(item => item._id);
+        if (bun) ingredientIds.unshift(bun._id, bun._id); // если булки отдельно
+        dispatch(submitOrder(ingredientIds));
+    };
         return (
             <div className="burger-constructor">
                 {
@@ -91,10 +101,8 @@ const BurgerConstructor = () => {
                         type="primary"/>
                     </p>
                     <Button htmlType="button" onClick={() => {
-                        dispatch(openModal({
-                            typeModal: "OrderDetails",
-                            modalTitle: "Детали заказа"
-                        }))
+                        handleOrder()
+
                     }} type="primary" size="medium">
                         Оформить заказ
                     </Button>

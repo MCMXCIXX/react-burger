@@ -1,4 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {request} from "../api";
 
 const initialState = {
     ingredients: [],
@@ -7,6 +8,22 @@ const initialState = {
     ingredientsCount: {},
     maxRequiredIngredients: 2,
 }
+
+export const submitOrder = createAsyncThunk(
+    'order/submitOrder',
+    async (ingredientIds, { rejectWithValue, getState }) => {
+        try {
+            // Здесь может пригодиться токен авторизации, но пока без него
+            const data = await request('/orders', {
+                method: 'POST',
+                body: JSON.stringify({ ingredients: ingredientIds }),
+            });
+            return data.order.number; // предположим, сервер возвращает номер заказа
+        } catch (err) {
+            return rejectWithValue(err.message);
+        }
+    }
+);
 
 export const burgerConstructorSlice = createSlice({
     name: "burgerConstructor",
