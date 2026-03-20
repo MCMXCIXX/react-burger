@@ -18,7 +18,7 @@ const MenuButton = (props) => {
     const buttonProps = {type}
     const specificProps = isLink ? linkProps : buttonProps
     return (
-        <Component className={`menu-button ${!disabledPadding ? 'p-4' : ''}`}
+        <Component className={`menu-button ${!disabledPadding ? 'p-4' : ''} ${className}`}
                    title={title}
                    aria-label={title}
                    {...specificProps}

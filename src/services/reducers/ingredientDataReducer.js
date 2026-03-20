@@ -6,9 +6,7 @@ export const fetchIngredientsData = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const data = await request('/ingredients');
-            // Обрати внимание: бэкенд может возвращать объект вида { data: [...] }
-            // Посмотри в ответе сервера, возможно нужен data.data
-            return data.data; // или просто data, смотря что приходит
+            return data.data;
         } catch (err) {
             return rejectWithValue(err.message);
         }

@@ -13,12 +13,11 @@ export const submitOrder = createAsyncThunk(
     'order/submitOrder',
     async (ingredientIds, { rejectWithValue, getState }) => {
         try {
-            // Здесь может пригодиться токен авторизации, но пока без него
             const data = await request('/orders', {
                 method: 'POST',
                 body: JSON.stringify({ ingredients: ingredientIds }),
             });
-            return data.order.number; // предположим, сервер возвращает номер заказа
+            return data.order.number;
         } catch (err) {
             return rejectWithValue(err.message);
         }
