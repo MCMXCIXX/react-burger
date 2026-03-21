@@ -27,6 +27,30 @@ export const registerUser = createAsyncThunk(
     }
 )
 
+export const updateUser = createAsyncThunk(
+    'auth/update',
+    async ({userName, userPassword, userEmail}, {dispatch, rejectWithValue}) => {
+        try {
+            dispatch(setLoading(true));
+            const body = {email: userEmail, name: userName};
+            if(userPassword) {
+                body.password = userPassword;
+            }
+            const data = await request('/auth/user', {
+                method: 'PATCH',
+                body: JSON.stringify(body)
+            });
+
+            dispatch(setUser(data.user));
+        } catch (error) {
+            dispatch(setError(error.message));
+            return rejectWithValue(error.message);
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
+)
+
 export const resetPassword = createAsyncThunk(
     'auth/resetPassword',
     async (email, {dispatch, rejectWithValue}) => {
@@ -49,7 +73,7 @@ export const resetPassword = createAsyncThunk(
 export const setNewPassword = createAsyncThunk(
     'auth/setNewPassword',
     async ({password, code}, {dispatch, rejectWithValue}) => {
-        try{
+        try {
             dispatch(setLoading(true));
             const data = await request('/password-reset/reset', {
                 method: 'POST',
