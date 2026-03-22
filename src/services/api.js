@@ -17,7 +17,7 @@ export const request = (endpoint, options = {}) => {
     }).then((res) => {
         if (res.status === 401) {
             const refreshToken = localStorage.getItem('refreshToken');
-            return fetch(`${BASE_URL}/auth/refreshToken}`, {
+            return fetch(`${BASE_URL}/auth/refreshToken`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token: refreshToken }),

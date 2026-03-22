@@ -149,7 +149,7 @@ export const refreshToken = createAsyncThunk(
 )
 
 export const logoutThunk = createAsyncThunk(
-    'auth/logiut',
+    'auth/logout',
     async (_, {rejectWithValue, dispatch}) => {
         dispatch(setLoading(true));
         try {
