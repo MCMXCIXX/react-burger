@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {setError, setLoading, setPasswordResetRequested, setUser} from "../reducers/authSlice";
+import {logout, setError, setLoading, setPasswordResetRequested, setUser} from "../reducers/authSlice";
 import {request} from "../api";
 
 
@@ -33,7 +33,7 @@ export const updateUser = createAsyncThunk(
         try {
             dispatch(setLoading(true));
             const body = {email: userEmail, name: userName};
-            if(userPassword) {
+            if (userPassword) {
                 body.password = userPassword;
             }
             const data = await request('/auth/user', {
@@ -144,6 +144,32 @@ export const refreshToken = createAsyncThunk(
 
         } catch (err) {
             return rejectWithValue(err.message);
+        }
+    }
+)
+
+export const logoutThunk = createAsyncThunk(
+    'auth/logiut',
+    async (_, {rejectWithValue, dispatch}) => {
+        dispatch(setLoading(true));
+        try {
+            const refreshToken = localStorage.getItem('refreshToken');
+            if (!refreshToken) {
+                throw new Error('Refresh Token is missing');
+            }
+            await request('/auth/logout', {
+                method: 'POST',
+                body: JSON.stringify({token: refreshToken}),
+            })
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            dispatch(logout())
+
+        } catch (err) {
+            dispatch(setError(err.message));
+            return rejectWithValue(err.message);
+        } finally {
+            dispatch(setLoading(false));
         }
     }
 )

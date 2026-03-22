@@ -14,5 +14,27 @@ export const request = (endpoint, options = {}) => {
             ...options.headers,
         },
         ...options,
-    }).then(checkResponse);
+    }).then((res) => {
+        if (res.status === 401) {
+            const refreshToken = localStorage.getItem('refreshToken');
+            return fetch(`${BASE_URL}/auth/refreshToken}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: refreshToken }),
+            }).then(checkResponse)
+            .then((data) => {
+                localStorage.setItem('accessToken', data.accessToken)
+                localStorage.setItem('refreshToken', data.refreshToken)
+                return fetch(`${BASE_URL}${endpoint}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token && { Authorization: token }),
+                        ...options.headers,
+                    },
+                    ...options,
+                }).then(checkResponse);
+            });
+        }
+        return checkResponse(res)
+    });
 };
