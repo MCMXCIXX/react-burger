@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styles from './LoginPage.module.scss';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {Button, Input, ShowIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {loginUser} from "../../services/thunks/authThunks";
@@ -13,19 +13,21 @@ export const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
 
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(loginUser({email, password}))
-        navigate('/profile')
+        navigate(from)
     }
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/profile');
+            navigate(from);
         }
     }, [isAuthenticated, navigate]);
+
 
     return (
         <div className={styles.container}>

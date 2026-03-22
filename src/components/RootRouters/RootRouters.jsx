@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './RootRouters.module.scss';
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {HomePage} from "../../pages/HomePage/HomePage";
 import {FeedPage} from "../../pages/FeedPage/FeedPage";
 import {ProfilePage} from "../../pages/Profile/ProfilePage/ProfilePage";
@@ -16,13 +16,24 @@ import {IngredientPage} from "../../pages/IngredientPage/IngredientPage";
 import {ProtectedRoute} from "../ProtectedRoute/ProtectedRoute";
 import {PubicProtectedRoute} from "../PubicProtectedRoute/PubicProtectedRoute";
 import {ResetPasswordRoute} from "../ResetPasswordRoute/ResetPasswordRoute";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 
 export const RootRouters = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    console.log(location);
+    const background = location.state?.background;
+
     return (
         <div className={styles.container}>
-            <Routes>
+            <Routes location={background || location} >
                 <Route path="/" element={<HomePage/>}/>
+                <Route path="ingredients/:ingredientId" element={<IngredientPage/>}/>
+                {background && (
+                    <Route path="/ingredients/:id" element={<Modal><IngredientDetails /></Modal>} />
+                )}
                 <Route element={<ProtectedRoute/>}>
                     <Route path="profile" element={<ProfilePage/>}>
                         <Route index element={<ProfileInfo/>}/>
@@ -42,7 +53,7 @@ export const RootRouters = () => {
                 </Route>
 
 
-                <Route path="ingredient/:ingredientId" element={<IngredientPage/>}/>
+
                 <Route path="feed" element={<FeedPage/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>
             </Routes>

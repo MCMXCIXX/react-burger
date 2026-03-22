@@ -4,7 +4,7 @@ import {showNotificationWithTimeout} from "../reducers/notificationReducer";
 const requiredType = 'bun'
 
 
-const findIngredientThunk = (id) => {
+export const findIngredientThunk = (id) => {
 
     return (getState) => {
         const state = getState();

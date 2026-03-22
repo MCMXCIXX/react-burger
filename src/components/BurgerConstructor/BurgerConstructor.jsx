@@ -11,6 +11,7 @@ import {IngredientPlaceholder} from "../IngredientPlaceholder/IngredientPlacehol
 import {useDrop} from "react-dnd";
 import {addIngredientsThunk} from "../../services/thunks/burgerConstructorThunks";
 import {BurgerConstructorItem} from "../BurgerConstructorItem/BurgerConstructorItem";
+import {Navigate, useLocation, useNavigate} from "react-router-dom";
 
 const BurgerConstructor = () => {
         const constructorData = useSelector(state => state.burgerConstructor.ingredients)
@@ -18,8 +19,8 @@ const BurgerConstructor = () => {
         const bun = useSelector(state => state.burgerConstructor.bun)
         const dispatch = useDispatch();
         const hasIngredients = constructorData.length > 0;
-
-
+        const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+        const navigate = useNavigate();
 
         const [{dragItemType}, dropTarget] = useDrop({
             accept: "ingredient",
@@ -33,10 +34,16 @@ const BurgerConstructor = () => {
 
 
     const handleOrder = () => {
-        const ingredientIds = constructorData.map(item => item._id);
-        if (bun) ingredientIds.unshift(bun._id, bun._id); // если булки отдельно
-        dispatch(submitOrder(ingredientIds));
+        if(isAuthenticated){
+            const ingredientIds = constructorData.map(item => item._id);
+            if (bun) ingredientIds.unshift(bun._id, bun._id); // если булки отдельно
+            dispatch(submitOrder(ingredientIds));
+        } else {
+            navigate('/login')
+        }
     };
+
+
         return (
             <div className="burger-constructor">
                 {
