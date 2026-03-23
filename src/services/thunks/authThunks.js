@@ -79,7 +79,7 @@ export const setNewPassword = createAsyncThunk(
                 method: 'POST',
                 body: JSON.stringify({password, token: code}),
             })
-            console.log(data);
+            dispatch(setPasswordResetRequested(false));
         } catch (error) {
             dispatch(setError(error.message));
             return rejectWithValue(error.message);
@@ -152,6 +152,7 @@ export const logoutThunk = createAsyncThunk(
     'auth/logout',
     async (_, {rejectWithValue, dispatch}) => {
         dispatch(setLoading(true));
+        dispatch(logout());
         try {
             const refreshToken = localStorage.getItem('refreshToken');
             if (!refreshToken) {
@@ -163,7 +164,7 @@ export const logoutThunk = createAsyncThunk(
             })
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-            dispatch(logout())
+
 
         } catch (err) {
             dispatch(setError(err.message));

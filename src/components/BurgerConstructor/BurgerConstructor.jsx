@@ -21,6 +21,7 @@ const BurgerConstructor = () => {
         const hasIngredients = constructorData.length > 0;
         const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
         const navigate = useNavigate();
+        const location = useLocation();
 
         const [{dragItemType}, dropTarget] = useDrop({
             accept: "ingredient",
@@ -39,7 +40,7 @@ const BurgerConstructor = () => {
             if (bun) ingredientIds.unshift(bun._id, bun._id); // если булки отдельно
             dispatch(submitOrder(ingredientIds));
         } else {
-            navigate('/login')
+            navigate('/login', {state: {from: location}})
         }
     };
 

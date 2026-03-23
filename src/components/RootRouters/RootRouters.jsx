@@ -14,7 +14,7 @@ import {ForgotPasswordPage} from "../../pages/ForgotPasswordPage/ForgotPasswordP
 import {ResetPasswordPage} from "../../pages/ResetPasswordPage/ResetPasswordPage";
 import {IngredientPage} from "../../pages/IngredientPage/IngredientPage";
 import {ProtectedRoute} from "../ProtectedRoute/ProtectedRoute";
-import {PubicProtectedRoute} from "../PubicProtectedRoute/PubicProtectedRoute";
+import {PublicProtectedRoute} from "../PublicProtectedRoute/PublicProtectedRoute";
 import {ResetPasswordRoute} from "../ResetPasswordRoute/ResetPasswordRoute";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
@@ -34,6 +34,7 @@ export const RootRouters = () => {
                 {background && (
                     <Route path="/ingredients/:id" element={<Modal><IngredientDetails /></Modal>} />
                 )}
+                <Route path="feed/:orderId" element={<OrderPage/>}/>
                 <Route element={<ProtectedRoute/>}>
                     <Route path="profile" element={<ProfilePage/>}>
                         <Route index element={<ProfileInfo/>}/>
@@ -41,10 +42,10 @@ export const RootRouters = () => {
                     </Route>
                 </Route>
 
-                <Route element={<PubicProtectedRoute/>}>
+                <Route element={<PublicProtectedRoute/>}>
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterPage/>}/>
-                    <Route path="feed/:orderId" element={<OrderPage/>}/>
+
                     <Route path="forgot-password" element={<ForgotPasswordPage/>}/>
                 </Route>
 

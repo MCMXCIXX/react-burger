@@ -25,6 +25,7 @@ export const request = (endpoint, options = {}) => {
             .then((data) => {
                 localStorage.setItem('accessToken', data.accessToken)
                 localStorage.setItem('refreshToken', data.refreshToken)
+                const token = localStorage.getItem('accessToken');
                 return fetch(`${BASE_URL}${endpoint}`, {
                     headers: {
                         'Content-Type': 'application/json',

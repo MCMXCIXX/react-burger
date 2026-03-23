@@ -17,7 +17,6 @@ function App() {
     const {ingredients, loading, error} = useSelector(state => state.ingredientData);
 
     useEffect(() => {
-        console.log('App init, token:', localStorage.getItem('accessToken'));
         const initAuth = async () => {
             const token = localStorage.getItem('accessToken');
             if (!token) return; // нет токена — ничего не делаем
