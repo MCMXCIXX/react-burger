@@ -3,6 +3,7 @@ import {openModal} from "../../services/reducers/modalReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag} from "react-dnd";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 
@@ -17,10 +18,13 @@ export const IngredientCard = (props) => {
             opacity: monitor.isDragging() ? 0.5 : 1
         })
     });
+    const navigate = useNavigate();
+    const location = useLocation();
     return (
         <li ref={dragRef} style={{opacity: opacity}} key={ingredient._id} className="ingredients-list__list-item" id={ingredient._id}
 
             onClick={() => {
+                navigate(`/ingredients/${ingredient._id}`, { state: { background: location } });
                 dispatch(openModal(
                     {
                         props: {
