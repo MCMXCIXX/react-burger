@@ -4,13 +4,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag} from "react-dnd";
 import {useLocation, useNavigate} from "react-router-dom";
+import {Ingredient} from "../../types/ingredient";
 
+interface IngredientCardProps {
+    ingredient: Ingredient;
+}
 
-
-export const IngredientCard = (props) => {
+export const IngredientCard = (props: IngredientCardProps) => {
     const {ingredient} = props;
     const dispatch = useDispatch();
-    const ingredientsCount = useSelector(state => state.burgerConstructor.ingredientsCount);
+    const ingredientsCount = useSelector((state: any) => state.burgerConstructor.ingredientsCount);
     const [{ opacity }, dragRef] = useDrag({
         type: 'ingredient',
         item: { id: ingredient._id, type: ingredient.type },
@@ -21,7 +24,7 @@ export const IngredientCard = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
     return (
-        <li ref={dragRef} style={{opacity: opacity}} key={ingredient._id} className="ingredients-list__list-item" id={ingredient._id}
+        <li ref={(node) => { dragRef(node); }} style={{opacity: opacity}} key={ingredient._id} className="ingredients-list__list-item" id={ingredient._id}
 
             onClick={() => {
                 navigate(`/ingredients/${ingredient._id}`, { state: { background: location } });

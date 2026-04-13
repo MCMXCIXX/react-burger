@@ -2,17 +2,14 @@ import './IngredientsList.scss';
 import React, {forwardRef} from "react";
 import {useSelector} from "react-redux";
 import {IngredientCard} from "../IngredientCard/IngredientCard";
+import {Ingredient} from "../../types/ingredient";
 
 interface IngredientsListProps {
     type: string;
     title: string;
 }
 
-type Ingredient = {
-    _id: string;
-    type: string;
 
-}
 
 const IngredientsList = forwardRef<HTMLHeadingElement, IngredientsListProps>(((props, ref) => {
     const {type, title} = props

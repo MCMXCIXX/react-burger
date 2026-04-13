@@ -1,8 +1,10 @@
 import React from 'react';
 import styles from './IngredientLargeImage.module.scss';
-
-
-export const IngredientLargeImage = (props) => {
+import {Ingredient} from "../../types/ingredient";
+interface IngredientLargeImageProps {
+    ingredient: Ingredient;
+}
+export const IngredientLargeImage = (props: IngredientLargeImageProps) => {
     const {ingredient} = props;
     return (
         <div className={styles['ingredient-large-image']}>

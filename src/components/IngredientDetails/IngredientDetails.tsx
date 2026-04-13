@@ -1,8 +1,14 @@
 import styles from './IngredientDetails.module.scss'
 import {Composition} from "../Composition/Composition";
 import {IngredientLargeImage} from "../IngredientLargeImage/IngredientLargeImage";
+import {Ingredient} from "../../types/ingredient";
 
-const IngredientDetails = (props) => {
+
+interface IngredientDetailsProps {
+    ingredient?: Ingredient;
+}
+
+const IngredientDetails = (props: IngredientDetailsProps) => {
     const {ingredient} = props;
     if(!ingredient){
         return null;

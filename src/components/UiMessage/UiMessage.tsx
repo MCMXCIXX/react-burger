@@ -1,6 +1,11 @@
 import './UiMessage.scss'
 
-const UiMessage = (props) => {
+interface UiMessageProps {
+    text: string;
+    className?: string;
+}
+
+const UiMessage = (props: UiMessageProps) => {
     const {text, className} = props;
     return (
         <div className={`uiMessage ${className}`}>
