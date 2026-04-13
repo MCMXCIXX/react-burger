@@ -1,8 +1,15 @@
 import React from 'react';
 import styles from './Composition.module.scss';
+import {Ingredient} from "../../types/ingredient";
 
 
-export const Composition = (props) => {
+
+
+type CompositionProps = {
+    ingredient: Ingredient;
+}
+
+export const Composition = (props : CompositionProps) => {
     const {ingredient} = props;
     return (
         <ul className={styles.composition}>

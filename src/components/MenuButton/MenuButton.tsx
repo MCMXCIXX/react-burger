@@ -1,6 +1,18 @@
 import './MenuButton.scss';
 
-const MenuButton = (props) => {
+interface MenuButtonProps {
+    className?: string;
+    href?: string;
+    icon?: React.ReactNode;
+    text: string;
+    type?: "button" | "submit" | "reset";
+    target?: "_self" | "_blank";
+    title: string;
+    disabledPadding?: boolean;
+
+}
+
+const MenuButton = (props: MenuButtonProps) => {
     const {
         className,
         href,
