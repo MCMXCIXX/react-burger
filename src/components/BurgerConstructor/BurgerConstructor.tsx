@@ -12,18 +12,24 @@ import {useDrop} from "react-dnd";
 import {addIngredientsThunk} from "../../services/thunks/burgerConstructorThunks";
 import {BurgerConstructorItem} from "../BurgerConstructorItem/BurgerConstructorItem";
 import {Navigate, useLocation, useNavigate} from "react-router-dom";
+import {useRef} from "react";
 
+type TItem = {
+    id: string;
+    _id: string;
+    type: string;
+}
 const BurgerConstructor = () => {
-        const constructorData = useSelector(state => state.burgerConstructor.ingredients)
-        const totalPrice = useSelector(state => state.burgerConstructor.totalPrice)
-        const bun = useSelector(state => state.burgerConstructor.bun)
-        const dispatch = useDispatch();
+        const constructorData = useSelector((state: any)=> state.burgerConstructor.ingredients)
+        const totalPrice = useSelector((state: any)=> state.burgerConstructor.totalPrice)
+        const bun = useSelector((state: any)=> state.burgerConstructor.bun)
+        const dispatch: any = useDispatch();
         const hasIngredients = constructorData.length > 0;
-        const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+        const isAuthenticated = useSelector((state: any)=> state.auth.isAuthenticated);
         const navigate = useNavigate();
         const location = useLocation();
 
-        const [{dragItemType}, dropTarget] = useDrop({
+        const [{dragItemType}, dropTarget] = useDrop<TItem, void, {dragItemType: string | symbol | null}>({
             accept: "ingredient",
             drop(item) {
                 dispatch(addIngredientsThunk(item.id));
@@ -36,7 +42,7 @@ const BurgerConstructor = () => {
 
     const handleOrder = () => {
         if(isAuthenticated){
-            const ingredientIds = constructorData.map(item => item._id);
+            const ingredientIds = constructorData.map((item: any) => item._id);
             if (bun) ingredientIds.unshift(bun._id, bun._id); // если булки отдельно
             dispatch(submitOrder(ingredientIds));
         } else {
@@ -48,7 +54,7 @@ const BurgerConstructor = () => {
         return (
             <div className="burger-constructor">
                 {
-                    (<ul ref={dropTarget} className="burger-constructor__list">
+                    (<ul ref={(node) => {dropTarget(node)}} className="burger-constructor__list">
                         {
                             (bun ? <BurgerConstructorItem
                                     elementProps={{
@@ -68,8 +74,9 @@ const BurgerConstructor = () => {
 
 
                         {
-                            (hasIngredients ? constructorData.map((ingredient, index) => (
+                            (hasIngredients ? constructorData.map((ingredient: any, index: number)  => (
                                 <BurgerConstructorItem
+                                    typeElement={ingredient.type}
                                     elementProps={{
                                         text: ingredient.name,
                                         price: ingredient.price,
@@ -79,7 +86,7 @@ const BurgerConstructor = () => {
                                         },
                                     }} index={index} id={ingredient.id}
                                     key={ingredient.id}/>
-                            )) : <IngredientPlaceholder accentPlaceholder={dragItemType !== 'bun' && dragItemType}
+                            )) : <IngredientPlaceholder accentPlaceholder={!!dragItemType && dragItemType !== 'bun'}
                                                         text={'Выберите начинку'}/>)
 
                         }

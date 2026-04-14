@@ -8,20 +8,20 @@ import {debounce} from "../../services/utils";
 
 const BurgerIngredients = () => {
     const [current, setCurrent] = React.useState('bun');
-    const dispatch = useDispatch();
-    const {ingredients, loading, error} = useSelector(state => state.ingredientData);
+    const dispatch: any = useDispatch();
+    const {ingredients, loading, error} = useSelector((state: any) => state.ingredientData);
 
-    const ingredientsListRefs = useRef([]);
-    const burgerIngredientsBlock = useRef(null);
+    const ingredientsListRefs = useRef <(HTMLHeadingElement | null)[]>([]);
+    const burgerIngredientsBlock = useRef<HTMLDivElement>(null);
     const ingredientsListDataRender = [
         {title: "Булки", type: "bun"}, {title: "Начинка", type: "main"}, {title: "Соусы", type: "sauce"},
     ]
 
-    const setIngredientsListRefs = (index) => (node) => {
+    const setIngredientsListRefs = (index: number) => (node: HTMLHeadingElement | null) => {
         ingredientsListRefs.current[index] = node;
     };
 
-    const tabScroll = (type) => {
+    const tabScroll = (type: string) => {
         const node = ingredientsListRefs.current.find((n) => n?.dataset?.type === type);
         node?.scrollIntoView({behavior: "smooth", block: "start"});
     }
@@ -37,7 +37,7 @@ const BurgerIngredients = () => {
                 let tabIndex = 0;
                 let minValue = Infinity;
 
-                ingredientsListRefs.current.forEach((item, index) => {
+                ingredientsListRefs.current.forEach((item: HTMLHeadingElement | null, index) => {
                     if(!item) return;
 
                     const itemRect = Math.abs(item.getBoundingClientRect().top - burgerIngredientsBlockTop);
@@ -120,7 +120,6 @@ const BurgerIngredients = () => {
                             key={type}
                             title={title}
                             type={type}
-                            id={type}
                         />
                     )
                 })}

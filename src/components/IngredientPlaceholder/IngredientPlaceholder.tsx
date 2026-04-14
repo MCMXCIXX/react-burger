@@ -2,8 +2,13 @@ import React from 'react';
 import styles from './IngredientPlaceholder.module.scss';
 import classNames from "classnames";
 
+interface IngredientPlaceholderProps {
+    text: string;
+    className?: string;
+    accentPlaceholder?: boolean;
+}
 
-export const IngredientPlaceholder = (props) => {
+export const IngredientPlaceholder = (props: IngredientPlaceholderProps) => {
   const {text, className = 'ingredient', accentPlaceholder} = props;
 
     return (

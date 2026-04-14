@@ -4,12 +4,22 @@ import {useDispatch} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
 import {moveIngredient} from "../../services/reducers/burgerConstructorReducer";
 
+interface BurgerConstructorItemProps {
+    index?: number;
+    id: string;
+    typeElement: string;
+    elementProps: any;
+}
 
-export const BurgerConstructorItem = (props) => {
+type Titem = {
+    index: number;
+}
+
+export const BurgerConstructorItem = (props: BurgerConstructorItemProps) => {
     const { index = 0, id, typeElement, elementProps} = props
     const dispatch = useDispatch();
-    const ref = useRef(null)
-    const [{handlerId}, drop] = useDrop({
+    const ref  = useRef<HTMLLIElement>(null)
+    const [{handlerId}, drop] = useDrop<Titem, void, {handlerId: string | symbol | null}>({
         accept: 'mainIngredient',
         collect(monitor) {
             return {
@@ -32,6 +42,8 @@ export const BurgerConstructorItem = (props) => {
                 (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
 
             const clientOffset = monitor.getClientOffset()
+
+            if(!clientOffset) return
 
             const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
