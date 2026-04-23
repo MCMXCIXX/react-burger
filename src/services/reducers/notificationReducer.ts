@@ -1,6 +1,12 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-const initialState = {
+interface NotificationState {
+    notificationMessage: string | null;
+    isShow: boolean;
+    showTime: number;
+}
+
+const initialState: NotificationState = {
     notificationMessage: null,
     isShow: false,
     showTime: 2500,
@@ -10,21 +16,21 @@ export const notificationSlice = createSlice({
     name: 'notification',
     initialState,
     reducers: {
-        showNotification: (state, action) => {
+        showNotification: (state, action: PayloadAction<string>) => {
             state.isShow = true;
             state.notificationMessage = action.payload;
         },
-        hideNotification: (state, action) => {
+        hideNotification: (state) => {
             state.isShow = false;
             state.notificationMessage = null;
         }
     },
 })
 
-let hideNotificationTimerId = null;
+let hideNotificationTimerId: ReturnType<typeof setTimeout> | null = null;
 
-export const showNotificationWithTimeout  = (message) => {
-    return (dispatch, getState) => {
+export const showNotificationWithTimeout  = (message: string) => {
+    return (dispatch: any, getState: any) => {
         const state = getState();
         dispatch(showNotification(message))
         if(hideNotificationTimerId){

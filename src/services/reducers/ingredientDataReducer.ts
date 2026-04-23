@@ -1,19 +1,26 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {request} from "../api";
+import {Ingredient} from "../../types/ingredient";
 
-export const fetchIngredientsData = createAsyncThunk(
+interface IngredientDataState {
+    ingredients: Ingredient[];
+    loading: boolean;
+    error: string | null;
+}
+
+export const fetchIngredientsData = createAsyncThunk<Ingredient[], void, { rejectValue: string }>(
     'ingredients/fetchIngredients',
     async (_, { rejectWithValue }) => {
         try {
             const data = await request('/ingredients');
             return data.data;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue((err as Error).message);
         }
     }
 );
 
-const initialState = {
+const initialState: IngredientDataState = {
     ingredients: [],
     loading: false,
     error: null,
@@ -36,7 +43,7 @@ const ingredientDataSlice = createSlice({
             })
             .addCase(fetchIngredientsData.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload || 'Неизвестная ошибка';
+                state.error = (action.payload as string) || 'Неизвестная ошибка';
             })
     }
 })

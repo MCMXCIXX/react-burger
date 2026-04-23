@@ -6,6 +6,8 @@ import {ingredientDataReducer} from "../reducers/ingredientDataReducer";
 import modalReducer from "../reducers/modalReducer";
 import authReducer from "../reducers/authSlice";
 
+
+
 const loadStateFromLocalStorage = () => {
     const state = localStorage.getItem("burgerConstructorState");
     if (state === null) {

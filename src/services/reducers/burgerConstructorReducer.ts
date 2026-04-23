@@ -1,7 +1,22 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {request} from "../api";
+import {Ingredient} from "../../types/ingredient";
 
-const initialState = {
+
+
+interface ConstructorIngredient extends Ingredient {
+    id: string;
+}
+
+interface BurgerConstructorState {
+    ingredients: ConstructorIngredient[];
+    bun: Ingredient | null;
+    totalPrice: number;
+    ingredientsCount: Record<string, number>;
+    maxRequiredIngredients: number;
+}
+
+const initialState: BurgerConstructorState = {
     ingredients: [],
     bun: null,
     totalPrice: 0,
@@ -9,17 +24,17 @@ const initialState = {
     maxRequiredIngredients: 2,
 }
 
-export const submitOrder = createAsyncThunk(
+export const submitOrder = createAsyncThunk<string[], number, {rejectValue: string}>(
     'order/submitOrder',
-    async (ingredientIds, { rejectWithValue, getState }) => {
+    async (ingredientIds, {rejectWithValue, getState}) => {
         try {
             const data = await request('/orders', {
                 method: 'POST',
-                body: JSON.stringify({ ingredients: ingredientIds }),
+                body: JSON.stringify({ingredients: ingredientIds}),
             });
             return data.order.number;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue((err as Error).message);
         }
     }
 );
@@ -28,12 +43,12 @@ export const burgerConstructorSlice = createSlice({
     name: "burgerConstructor",
     initialState,
     reducers: {
-        addConstructorIngredient(state, action) {
+        addConstructorIngredient(state, action: PayloadAction<ConstructorIngredient>) {
             state.ingredients.push(action.payload);
             state.ingredientsCount[action.payload._id] = (state.ingredientsCount[action.payload._id] || 0) + 1;
             state.totalPrice += action.payload.price;
         },
-        deleteConstructorIngredient(state, action) {
+        deleteConstructorIngredient(state, action: PayloadAction<ConstructorIngredient>) {
 
 
             const exists = state.ingredients.some((item) => item.id === action.payload.id);
@@ -52,19 +67,19 @@ export const burgerConstructorSlice = createSlice({
                 delete state.ingredientsCount[currentItemId];
             }
         },
-        addBunToConstructor(state, action) {
+        addBunToConstructor(state, action: PayloadAction<Ingredient>) {
             state.bun = (action.payload);
             state.ingredientsCount[action.payload._id] = (state.ingredientsCount[action.payload._id] || 0) + 2;
             state.totalPrice += action.payload.price * 2;
         },
-        deleteBunToConstructor(state, action) {
+        deleteBunToConstructor(state, action: PayloadAction<Ingredient>) {
             state.bun = null;
             state.totalPrice -= action.payload.price * 2;
             delete state.ingredientsCount[action.payload._id];
         },
-        switchBun(state, action) {
+        switchBun(state, action: PayloadAction<Ingredient>) {
             const prevBun = state.bun;
-            if(prevBun) {
+            if (prevBun) {
                 delete state.ingredientsCount[prevBun._id]
                 state.totalPrice -= prevBun.price * 2;
             }
@@ -73,8 +88,8 @@ export const burgerConstructorSlice = createSlice({
             state.ingredientsCount[action.payload._id] = 2;
             state.totalPrice += action.payload.price * 2;
         },
-        moveIngredient(state, action) {
-            const { dragIndex, hoverIndex } = action.payload;
+        moveIngredient(state, action: PayloadAction<{dragIndex: number, hoverIndex: number}>) {
+            const {dragIndex, hoverIndex} = action.payload;
             // Копируем массив (Immer позволяет «мутировать», но мы работаем с draft)
             const [removed] = state.ingredients.splice(dragIndex, 1);
             state.ingredients.splice(hoverIndex, 0, removed);
