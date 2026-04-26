@@ -24,7 +24,7 @@ const initialState: BurgerConstructorState = {
     maxRequiredIngredients: 2,
 }
 
-export const submitOrder = createAsyncThunk<string[], number, {rejectValue: string}>(
+export const submitOrder = createAsyncThunk<number,string[] , {rejectValue: string}>(
     'order/submitOrder',
     async (ingredientIds, {rejectWithValue, getState}) => {
         try {
